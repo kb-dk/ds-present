@@ -201,25 +201,28 @@
               <f:map key="specific_notes">
                 <f:string key="describing"><xsl:value-of select="$record-id"/></f:string>
                 <f:boolean key="described">false</f:boolean>
-                <xsl:for-each select="m:note[@type or @displayLabel]">
-                  <f:string>
-                    <xsl:attribute name="key">
-                      <xsl:choose>
-                        <xsl:when test="@type">
-                          <xsl:choose>
-                            <xsl:when test="contains(@type,'citation/reference')">reference</xsl:when>
-                            <xsl:when test="@displayLabel = 'Script'">script</xsl:when>
-                            <xsl:when test="@displayLabel = 'Script: detail'">script_detail</xsl:when>
-                            <xsl:otherwise><xsl:value-of select="my:escape_stuff(@type)"/></xsl:otherwise>
-                          </xsl:choose>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:value-of select="my:escape_stuff(@displayLabel)"/>
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:attribute>
-                    <xsl:value-of select="."/>
-                  </f:string>
+
+                <xsl:variable name="note_types" as="xs:string *">
+                  <xsl:for-each select="m:note[@type or @displayLabel]">
+                    <xsl:choose>
+                      <xsl:when test="@displayLabel">
+                        <xsl:value-of select="@displayLabel"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="@type"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:for-each>
+                </xsl:variable>
+
+                <xsl:for-each select="$note_types">
+                  <xsl:variable name="note_type" select="."/>
+                  <f:array>
+                    <xsl:attribute name="key"><xsl:value-of select="my:escape_stuff(lower-case($note_type))"/></xsl:attribute>
+                    <xsl:for-each select="$dom//m:note[@type=note_type or @displayLabel=$note_type]">
+                      <f:string><xsl:value-of select="."/></f:string>
+                    </xsl:for-each>
+                  </f:array>
                 </xsl:for-each>
               </f:map>
             </xsl:if>

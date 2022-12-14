@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:pbcore="http://www.pbcore.org/PBCore/PBCoreNamespace.html" xmlns:premis="http://www.loc.gov/premis/v3" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mix="http://www.loc.gov/mix/v20" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version111/mets.xsd" TYPE="File" OBJID="03723a65-1924-4e18-a51d-22c78252df2a" PROFILE="http://id.kb.dk/standards/mets/profiles/version_2/kbMetsProfile.xml">
-    <mets:metsHdr CREATEDATE="2022-11-14T07:44:56.459+01:00">
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:pbcore="http://www.pbcore.org/PBCore/PBCoreNamespace.html" xmlns:premis="http://www.loc.gov/premis/v3" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mix="http://www.loc.gov/mix/v20" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version111/mets.xsd" TYPE="File" OBJID="ed0115d1-073a-40a2-8615-5a7a19ea0c48" PROFILE="http://id.kb.dk/standards/mets/profiles/version_2/kbMetsProfile.xml">
+    <mets:metsHdr CREATEDATE="2022-12-08T14:24:59.506+01:00">
         <mets:agent ID="kbDk" ROLE="CREATOR" TYPE="ORGANIZATION">
             <mets:name>kbDk</mets:name>
             <mets:note>kbDkInternal</mets:note>
@@ -9,36 +10,36 @@
             <mets:note>kbDkInternal</mets:note>
         </mets:agent>
     </mets:metsHdr>
-    <mets:dmdSec CREATED="2022-11-14T07:44:56.459+01:00" ID="Mods1">
+    <mets:dmdSec CREATED="2022-12-08T14:24:59.511+01:00" ID="Mods1">
         <mets:mdWrap MDTYPE="MODS">
             <mets:xmlData>
-                <mods:mods xmlns:dk="/usr/local/ginnungagap/current/script/xsd" xmlns:cdl="http://www.cdlib.org/inside/diglib/copyrightMD" xmlns:md="http://www.loc.gov/mods/v3" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                <mods:mods xmlns:dk="/usr/local/ginnungagap/current/script/xsd" xmlns:cdl="http://www.cdlib.org/inside/diglib/copyrightMD" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
                     <mods:genre type="Categories">Genstande, Naturfag, Greve Museum, Naturfag, Greve Museum, Skolehistorie, 69 testfiler</mods:genre>
                     <mods:identifier type="uri">urn:uuid:3571e3f0-2ce6-11ed-81b4-005056882ec3</mods:identifier>
                     <mods:identifier type="local">SKG_20160704_12_16_05.tif</mods:identifier>
                     <mods:identifier type="Asset Reference">cumulus-core-test-01:/Depot/DAM/test/Samlingsbilleder/0001/642/631/SKG_20160704_12_16_05.tif</mods:identifier>
                     <mods:identifier type="Original Asset Reference">cumulus-core-01:/Depot/DAM/Samlingsbilleder/Emdrup/genstande/1-sending/SKG_20160704_12_16_05.tif</mods:identifier>
                     <mods:identifier displayLabel="Accession number" type="accession number">4532</mods:identifier>
-                    <mods:note type="content">Beskrivelse: Præparatglas med en spolorm.</mods:note>
-                    <mods:note type="content"/>
                     <mods:note type="content">Hjemtaget af: Greve Museum</mods:note>
-                    <mods:note displayLabel="Beskrivelse">Præparatglas med en spolorm.</mods:note>
-                    <mods:note type="provenance" displayLabel="Hjemtaget som">R</mods:note>
-                    <mods:note type="provenance" displayLabel="Hjemtaget af">Greve Museum</mods:note>
+                    <mods:note displayLabel="Description">Præparatglas med en spolorm.</mods:note>
+                    <mods:note type="provenance" displayLabel="Incorporated as">R</mods:note>
+                    <mods:note type="provenance" displayLabel="Incorporated by">Greve Museum</mods:note>
                     <mods:note displayLabel="Catalog Name">Samlingsbilleder</mods:note>
                     <mods:originInfo altRepGroup="surrogate">
                         <mods:dateCaptured>2021-01-15T13:47:36.000+01:00</mods:dateCaptured>
                     </mods:originInfo>
+                    <mods:physicalDescription>
+                        <mods:note displayLabel="Pageorientation">LTR</mods:note>
+                    </mods:physicalDescription>
                     <mods:recordInfo>
                         <mods:languageOfCataloging>
                             <mods:languageTerm authority="rfc4646" type="code">da</mods:languageTerm>
                         </mods:languageOfCataloging>
-                        <mods:recordInfoNote>LTR</mods:recordInfoNote>
                     </mods:recordInfo>
                     <mods:relatedItem type="otherFormat">
                         <mods:identifier displayLabel="image" type="uri">http://www.kb.dk/imageServicecumulus-core-test-01:/Depot/DAM/test/Samlingsbilleder/0001/642/631/SKG_20160704_12_16_05.jpg</mods:identifier>
                     </mods:relatedItem>
-                    <mods:relatedItem type="series" displayLabel="Samling">
+                    <mods:relatedItem type="host" displayLabel="Samling">
                         <mods:titleInfo>
                             <mods:title>Skolehistorie</mods:title>
                         </mods:titleInfo>
@@ -50,17 +51,14 @@
                     <mods:subject>
                         <mods:topic>Naturfag</mods:topic>
                     </mods:subject>
-                    <mods:titleInfo>
-                        <mods:title>Præparatglas, spolorm</mods:title>
-                    </mods:titleInfo>
-                    <mods:typeOfResource displayLabel="Generel materialebetegnelse">Billede, Todimensionalt billedmateriale</mods:typeOfResource>
-                    <mods:typeOfResource displayLabel="Materialebetegnelse">Genstand</mods:typeOfResource>
+                    <mods:typeOfResource displayLabel="Generel Resource Description">Billede, Todimensionalt billedmateriale</mods:typeOfResource>
+                    <mods:typeOfResource displayLabel="Resource Description">Genstand</mods:typeOfResource>
                 </mods:mods>
             </mets:xmlData>
         </mets:mdWrap>
     </mets:dmdSec>
     <mets:amdSec>
-        <mets:techMD CREATED="2022-11-14T07:44:56.480+01:00" ID="PremisObject1">
+        <mets:techMD CREATED="2022-12-08T14:24:59.567+01:00" ID="PremisObject1">
             <mets:mdWrap MDTYPE="PREMIS:OBJECT">
                 <mets:xmlData>
                     <premis:object version="3.0" xsi:schemaLocation="http://www.loc.gov/premis/v3 http://www.loc.gov/standards/premis/v3/premis-v3-0.xsd" xsi:type="premis:file">
@@ -193,11 +191,11 @@
             </mets:mdWrap>
         </mets:techMD>
         <!--Inside mets:rightsMD-->
-        <mets:rightsMD CREATED="2022-11-14T07:44:56.488+01:00" ID="ModsRights1">
+        <mets:rightsMD CREATED="2022-12-08T14:24:59.599+01:00" ID="ModsRights1">
             <mets:mdWrap MDTYPE="MODS">
                 <mets:xmlData>
-                    <mods:mods xmlns:dk="/usr/local/ginnungagap/current/script/xsd" xmlns:cdl="http://www.cdlib.org/inside/diglib/copyrightMD" xmlns:md="http://www.loc.gov/mods/v3" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
-                        <mods:accessCondition type="use and reproduction" displayLabel="Restricted ">Ejermærke</mods:accessCondition>
+                    <mods:mods xmlns:dk="/usr/local/ginnungagap/current/script/xsd" xmlns:cdl="http://www.cdlib.org/inside/diglib/copyrightMD" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+                        <mods:accessCondition type="use and reproduction" displayLabel="Restricted">Ejermærke</mods:accessCondition>
                         <mods:accessCondition>
                             <cdl:copyright publication.status="unknown" copyright.status="copyrighted" xsi:schemaLocation="http://www.cdlib.org/inside/diglib/copyrightMD /usr/local/ginnungagap/current/script/xsd/copyright-md.xsd"/>
                         </mods:accessCondition>
@@ -205,16 +203,16 @@
                 </mets:xmlData>
             </mets:mdWrap>
         </mets:rightsMD>
-        <mets:digiprovMD CREATED="2022-11-14T07:44:56.489+01:00" ID="PremisEvent1">
+        <mets:digiprovMD CREATED="2022-12-08T14:24:59.603+01:00" ID="PremisEvent1">
             <mets:mdWrap MDTYPE="PREMIS:EVENT">
                 <mets:xmlData>
                     <premis:event version="3.0" xsi:schemaLocation="http://www.loc.gov/premis/v3 http://www.loc.gov/standards/premis/v3/premis-v3-0.xsd">
                         <premis:eventIdentifier>
                             <premis:eventIdentifierType>UUID</premis:eventIdentifierType>
-                            <premis:eventIdentifierValue>77955d72-9086-4915-b57c-6f5653d54b12</premis:eventIdentifierValue>
+                            <premis:eventIdentifierValue>dbb419f9-9dee-4ccb-bdd8-1d5761d43350</premis:eventIdentifierValue>
                         </premis:eventIdentifier>
                         <premis:eventType>ingestion</premis:eventType>
-                        <premis:eventDateTime>2022-11-14T07:44:56.490+01:00</premis:eventDateTime>
+                        <premis:eventDateTime>2022-12-08T14:24:59.609+01:00</premis:eventDateTime>
                         <premis:eventDetailInformation>
                             <premis:eventDetail>awt.toolkit: sun.awt.X11.XToolkit
 file.encoding: UTF-8
@@ -259,34 +257,34 @@ user.language: da
                         </premis:linkingObjectIdentifier>
                         <premis:linkingObjectIdentifier>
                             <premis:linkingObjectIdentifierType>UUID</premis:linkingObjectIdentifierType>
-                            <premis:linkingObjectIdentifierValue>03723a65-1924-4e18-a51d-22c78252df2a</premis:linkingObjectIdentifierValue>
+                            <premis:linkingObjectIdentifierValue>ed0115d1-073a-40a2-8615-5a7a19ea0c48</premis:linkingObjectIdentifierValue>
                         </premis:linkingObjectIdentifier>
                     </premis:event>
                 </mets:xmlData>
             </mets:mdWrap>
         </mets:digiprovMD>
-        <mets:digiprovMD CREATED="2022-11-14T07:44:56.490+01:00" ID="PremisRepresentation1">
+        <mets:digiprovMD CREATED="2022-12-08T14:24:59.609+01:00" ID="PremisRepresentation1">
             <mets:mdWrap MDTYPE="PREMIS">
                 <mets:xmlData>
                     <premis:object version="3.0" xsi:schemaLocation="http://www.loc.gov/premis/v3 http://www.loc.gov/standards/premis/v3/premis-v3-0.xsd" xsi:type="premis:representation">
                         <premis:objectIdentifier>
                             <premis:objectIdentifierType>UUID</premis:objectIdentifierType>
-                            <premis:objectIdentifierValue>03723a65-1924-4e18-a51d-22c78252df2a</premis:objectIdentifierValue>
+                            <premis:objectIdentifierValue>ed0115d1-073a-40a2-8615-5a7a19ea0c48</premis:objectIdentifierValue>
                         </premis:objectIdentifier>
                         <premis:preservationLevel>
                             <premis:preservationLevelType>bitSafety</premis:preservationLevelType>
                             <premis:preservationLevelValue>Medium</premis:preservationLevelValue>
-                            <premis:preservationLevelDateAssigned>2022-11-14T07:44:56.491+01:00</premis:preservationLevelDateAssigned>
+                            <premis:preservationLevelDateAssigned>2022-12-08T14:24:59.614+01:00</premis:preservationLevelDateAssigned>
                         </premis:preservationLevel>
                         <premis:preservationLevel>
                             <premis:preservationLevelType>logical</premis:preservationLevelType>
                             <premis:preservationLevelValue>Migration</premis:preservationLevelValue>
-                            <premis:preservationLevelDateAssigned>2022-11-14T07:44:56.491+01:00</premis:preservationLevelDateAssigned>
+                            <premis:preservationLevelDateAssigned>2022-12-08T14:24:59.615+01:00</premis:preservationLevelDateAssigned>
                         </premis:preservationLevel>
                         <premis:preservationLevel>
                             <premis:preservationLevelType>confidentiality</premis:preservationLevelType>
                             <premis:preservationLevelValue>Low</premis:preservationLevelValue>
-                            <premis:preservationLevelDateAssigned>2022-11-14T07:44:56.491+01:00</premis:preservationLevelDateAssigned>
+                            <premis:preservationLevelDateAssigned>2022-12-08T14:24:59.615+01:00</premis:preservationLevelDateAssigned>
                         </premis:preservationLevel>
                         <premis:relationship>
                             <premis:relationshipType>structural</premis:relationshipType>
