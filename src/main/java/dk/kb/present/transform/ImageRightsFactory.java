@@ -14,21 +14,19 @@
  */
 package dk.kb.present.transform;
 
+import dk.kb.util.yaml.YAML;
+
 /**
- * As the transformers use the functional interfaces, they cannot throw checked exceptions.
- * This is an unchecked wrapper for {@link javax.xml.transform.TransformerException}.
+ * Constructs {@link ImageRightsExtractor}s.
  */
-public class RuntimeTransformerException extends RuntimeException {
-
-    public RuntimeTransformerException(String message) {
-        super(message);
+public class ImageRightsFactory implements DSTransformerFactory {
+    @Override
+    public String getTransformerID() {
+        return ImageRightsExtractor.ID;
     }
 
-    public RuntimeTransformerException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public RuntimeTransformerException(Throwable cause) {
-        super(cause);
+    @Override
+    public DSTransformer createTransformer(YAML conf) {
+        return new ImageRightsExtractor();
     }
 }
