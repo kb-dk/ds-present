@@ -21,10 +21,10 @@ import org.slf4j.LoggerFactory;
  * access_ejermaerke              | boolean
  * access_note                    | String (only if value)
  * access_skabelsesaar            | int (only if value)
- * access_ophavsperson_doedsaar   | int (always)
+ * access_ophavsperson_doedsaar   | int (only if value)  
  * access_searlige_visningsvilkaar| String (only if value)
  * access_materiale_type          | String (always)   
- * imageurl                       | String (temporary hack)
+ * imageurl                       | String (temporary hack) 
  */
 public class XsltCopyrightMapper {
         
@@ -74,8 +74,10 @@ public class XsltCopyrightMapper {
             solrFieldsMap.put(ACCESS_OPHAVSPERSON_DOEDSAAR_FIELD,""+copyrightAccessDto.getOphavsPersonDoedsAar());    
         }
         
-        solrFieldsMap.put(ACCESS_SKABELSESAAR_FIELD,""+copyrightAccessDto.getSkabelsesAar()); // will always be there.        
-        
+        if (copyrightAccessDto.getSkabelsesAar() != null ) {
+        	solrFieldsMap.put(ACCESS_SKABELSESAAR_FIELD,""+copyrightAccessDto.getSkabelsesAar()); // maybe only use this    
+        }        
+     
         if (mapper.getSearligevisningsVilkaar() != null) {
            solrFieldsMap.put(ACCESS_SEARLIGE_VISNINGSVILKAAR_FIELD,mapper.getSearligevisningsVilkaar());
         }        
