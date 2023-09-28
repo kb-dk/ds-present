@@ -493,6 +493,13 @@ In solrconfig.xml the classic schema is defined with this:  <schemaFactory class
     <?example     ?>
   </field>
 
+  <!-- termVectors=true & storeTermVectors=true to get better MoreLikeThis
+       and support the Unified Highlighter -->
+  <field name="text" type="text_general" multiValued="true" stored="true" termVectors="true" storeOffsetsWithPositions="true" >
+    <?description Content text field for newspaper article main text, television subtitles, radio transcriptions etc.?>
+    <?example     If a television recording with subtitles is indexed, this field will hold the subtitles and only the subtitles.?>
+  </field>
+
   <!-- Most fields are copied to this field for matching. -->
   <field name="freetext" type="freetext" multiValued="true" stored="false">
     <?description Freetext field, which contains text from multiple other fields.?>
