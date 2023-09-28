@@ -871,7 +871,6 @@
 
 
   <!-- Term Vector Component
-
        https://solr.apache.org/guide/solr/latest/query-guide/term-vector-component.html
     -->
   <searchComponent name="tvComponent" class="solr.TermVectorComponent"/>
@@ -892,6 +891,13 @@
     </arr>
   </requestHandler>
 
+  <!-- https://solr.apache.org/guide/solr/latest/query-guide/morelikethis.html#request-handler-configuration -->
+  <!-- Must be handler (as opposed to search component) for distribution support -->
+  <requestHandler name="/mlt" class="solr.MoreLikeThisHandler">
+    <str name="mlt.fl">text</str>
+  </requestHandler>    
+
+  
   <!-- Search results clustering component
 
        You'll need to set the solr.clustering.enabled system property
@@ -1247,4 +1253,5 @@ via parameters.  The below configuration supports hl.method=original and fastVec
     <transformer enable="${solr.ltr.enabled:false}" name="features" class="org.apache.solr.ltr.response.transform.LTRFeatureLoggerTransformerFactory">
       <str name="fvCacheName">QUERY_DOC_FV</str>
     </transformer>
+
 </config>
