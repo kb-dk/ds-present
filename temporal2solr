@@ -1,0 +1,161 @@
+#!/bin/bash
+
+#
+# Multiconverter of temporal transcriptions
+#
+
+: ${SRC:="$1"}
+# Possible values:
+# srt:     Check the SRT format
+# hms:     01:23:45
+# seconds: 123.45
+: ${FORMAT:="srt"} 
+: ${DUMP:="false"}
+
+if [[ ! -s "$SRC" ]]; then
+    echo "Usage: ./whisper2solr <whisper-file>"
+    exit 10
+fi
+
+# Input: 00:01:05,789 --> 00:01:08,839
+# Output: 00065789
+milliseconds_srt() {
+    local LINE="$1"
+    local MS=$(echo "${LINE:0:2}*60*60+${LINE:3:2}*60+${LINE:6:2}" | bc) # seconds
+    MS="$MS${LINE:9:3}" # ms
+    while [[ ${#MS} -lt 8 ]]; do
+        MS="0$MS"
+    done
+    echo "$MS"
+}
+
+timetag_srt() {
+    MODE=0
+    cat "$SRC" | while read -r LINE; do
+        if [[ $MODE -eq 0 ]]; then
+            # Ignore the counter line
+            MODE=1
+            continue
+        fi
+        
+        if [[ $MODE -eq 1 ]]; then
+            # 00:01:05,789 --> 00:01:08,839
+            echo -n 'ɣ'"$(milliseconds_srt "$LINE")"'ɣ'
+            MODE=2
+            continue
+        fi
+        
+        if [[ $MODE -eq 2 ]]; then
+            if [[ "." == ".$LINE" ]]; then
+                echo ""
+                MODE=0
+                continue
+            fi
+            echo -n " $LINE"
+        fi
+    done
+}
+
+
+# Input: 00:01:27  Indefra.
+# Output: 00087000 Indefra
+milliseconds_hms() {
+    local LINE="$1"
+    local MS=$(echo "${LINE:0:2}*60*60+${LINE:3:2}*60+${LINE:6:2}" | bc) # seconds
+    MS="${MS}000" # ms
+    while [[ ${#MS} -lt 8 ]]; do
+        MS="0$MS"
+    done
+    echo "$MS"
+}
+timetag_hms() {
+    cat "$SRC" | while read -r LINE; do
+        echo "ɣ$(milliseconds_hms "$LINE")ɣ ${LINE:10}"
+    done
+}
+
+# Input: 0031.76-33.76 Det var noget, vi ikke kunne forklare.
+# Output: 00031760 Det var noget, vi ikke kunne forklare.
+milliseconds_seconds() {
+    local LINE="$1"
+    local MS="$(grep -o '^[0-9]*[.][0-9]*' <<< "$LINE")0"
+    while [[ ${#MS} -lt 8 ]]; do
+        MS="0$MS"
+    done
+    echo "$MS"
+}
+timetag_seconds() {
+    cat "$SRC" | while read -r LINE; do
+        echo "ɣ$(milliseconds_seconds "$LINE")ɣ $(cut -d\  -f2- <<< "$LINE")"
+    done
+}
+
+timetag() {
+    case $FORMAT in
+        srt)
+            timetag_srt
+            ;;
+        hms)
+            timetag_hms
+            ;;
+        seconds)
+            timetag_seconds
+            ;;
+        *)
+            >&2 echo "Error: Unknown FORMAT '$FORMAT'"
+            ;;
+    esac
+}
+
+solrdoc() {
+    local T=$(mktemp)
+    timetag > $T
+
+    cat <<EOF
+{
+  "add": {
+    "doc": {
+      "id": "$SRC",
+      "origin": "ds.radiotv",
+      "accession_number": "11111111-1111-1111-1111-111111111111",
+      "collection": "Handheld test records",
+      "genre": [
+        "hovedgenre: Test",
+        "undergenre: Subtitles",
+        "indhold_emne: just hacking"
+      ],
+      "resource_description": "Moving Image",
+      "title": "Spionkagen bages",
+      "original_title": "Spionkringlen snoes",
+      "creator_affiliation": "DR7",
+      "notes": "Foo bar lorem ipsum",
+      "ritzau_id": "11111111-1111-1111-1111-111111111111",
+      "duration_ms": "1706000",
+      "color": "true",
+      "premiere": "false",
+      "aspect_ratio": "16:9",
+      "text": $(jq -R -s '.' < $T)
+    }
+  }
+}
+EOF
+    rm $T
+}
+
+index() {
+    local T=$(mktemp)
+    solrdoc > $T
+    if [[ "$DUMP" == "true" ]]; then
+        cat $T
+    else
+        curl -X POST -H 'Content-Type: application/json' 'http://localhost:10007/solr/ds/update' --data-binary @$T
+    fi
+    rm $T
+}
+
+for SRC in $@; do
+    echo ""
+    echo "- $SRC"
+    index
+done
+curl -X POST -H 'Content-Type: application/json' 'http://localhost:10007/solr/ds/update' --data-binary '{ "commit": {} }'
