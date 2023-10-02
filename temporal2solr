@@ -18,18 +18,32 @@ if [[ ! -s "$SRC" ]]; then
     exit 10
 fi
 
+# 12 3 -> 120
+alignr() {
+    local NUM="$1"
+    local WIDTH="$2"
+    while [[ ${#NUM} -lt "$WIDTH" ]]; do
+        NUM="${NUM}0"
+    done
+    echo "$NUM"
+}
+# 12 5 -> 00012
+alignl() {
+    local NUM="$1"
+    local WIDTH="$2"
+    while [[ ${#NUM} -lt "$WIDTH" ]]; do
+        NUM="0${NUM}"
+    done
+    echo "$NUM"
+}
+
 # Input: 00:01:05,789 --> 00:01:08,839
 # Output: 00065789
 milliseconds_srt() {
     local LINE="$1"
     local MS=$(echo "${LINE:0:2}*60*60+${LINE:3:2}*60+${LINE:6:2}" | bc) # seconds
-    MS="$MS${LINE:9:3}" # ms
-    while [[ ${#MS} -lt 8 ]]; do
-        MS="0$MS"
-    done
-    echo "$MS"
+    alignl "$MS${LINE:9:3}" 8
 }
-
 timetag_srt() {
     MODE=0
     cat "$SRC" | while read -r LINE; do
@@ -62,16 +76,18 @@ timetag_srt() {
 # Output: 00132640 der var væltet op af Tivolis udermur, så lydte der et ordentligt knæk,
 milliseconds_hmsms() {
     local LINE="$1"
-    local MS=$(echo "${LINE:0:2}*60*60+${LINE:3:2}*60+${LINE:6:2}" | bc) # seconds
-    MS="${MS}000" # ms
-    while [[ ${#MS} -lt 8 ]]; do
-        MS="0$MS"
-    done
-    echo "$MS"
+    local FULL=$(cut -d\  -f1 <<< "$LINE" | cut -d- -f1)
+    # 00:02:12.64
+    local MAIN=$(cut -d. -f1 <<< "$FULL")
+    local SUB=$(cut -d. -f2 <<< "$FULL")
+    local MS=$(echo "${MAIN:0:2}*60*60+${MAIN:3:2}*60+${MAIN:6:2}" | bc) # seconds
+    MS="$MS$(alignr "$SUB" 3)"
+    alignl "$MS" 8
 }
 timetag_hmsms() {
     cat "$SRC" | while read -r LINE; do
-        echo "ɣ$(milliseconds_hmsms "$LINE")ɣ ${LINE:10}"
+       
+        echo "ɣ$(milliseconds_hmsms "$LINE")ɣ $(cut -d\  -f3- <<< ${LINE})"
     done
 }
 
@@ -80,11 +96,7 @@ timetag_hmsms() {
 milliseconds_hms() {
     local LINE="$1"
     local MS=$(echo "${LINE:0:2}*60*60+${LINE:3:2}*60+${LINE:6:2}" | bc) # seconds
-    MS="${MS}000" # ms
-    while [[ ${#MS} -lt 8 ]]; do
-        MS="0$MS"
-    done
-    echo "$MS"
+    alignl "${MS}000" 8
 }
 timetag_hms() {
     cat "$SRC" | while read -r LINE; do
@@ -97,10 +109,7 @@ timetag_hms() {
 milliseconds_seconds() {
     local LINE="$1"
     local MS="$(grep -o '^[0-9]*[.][0-9]*' <<< "$LINE")0"
-    while [[ ${#MS} -lt 8 ]]; do
-        MS="0$MS"
-    done
-    echo "$MS"
+    alignl "${MS}" 8
 }
 timetag_seconds() {
     cat "$SRC" | while read -r LINE; do
@@ -115,6 +124,9 @@ timetag() {
             ;;
         hms)
             timetag_hms
+            ;;
+        hmsms)
+            timetag_hmsms
             ;;
         seconds)
             timetag_seconds
