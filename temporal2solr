@@ -8,6 +8,7 @@
 # Possible values:
 # srt:     Check the SRT format
 # hms:     01:23:45
+# hmsms:   00:02:08.64-00:02:12.64 / 00:01:52.0-00:01:53.0
 # seconds: 123.45
 : ${FORMAT:="srt"} 
 : ${DUMP:="false"}
@@ -56,6 +57,23 @@ timetag_srt() {
     done
 }
 
+
+# Input: 00:02:12.64-00:02:16.56  der var væltet op af Tivolis udermur, så lydte der et ordentligt knæk,
+# Output: 00132640 der var væltet op af Tivolis udermur, så lydte der et ordentligt knæk,
+milliseconds_hmsms() {
+    local LINE="$1"
+    local MS=$(echo "${LINE:0:2}*60*60+${LINE:3:2}*60+${LINE:6:2}" | bc) # seconds
+    MS="${MS}000" # ms
+    while [[ ${#MS} -lt 8 ]]; do
+        MS="0$MS"
+    done
+    echo "$MS"
+}
+timetag_hmsms() {
+    cat "$SRC" | while read -r LINE; do
+        echo "ɣ$(milliseconds_hmsms "$LINE")ɣ ${LINE:10}"
+    done
+}
 
 # Input: 00:01:27  Indefra.
 # Output: 00087000 Indefra
