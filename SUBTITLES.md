@@ -90,7 +90,14 @@ which results in something like
 01906.709 skal være læger i hele <em>Danmark</em>, og der skal være
 ```
 
-## Reflection
+## Extraction of keywords
+
+Q='*:*' ; for O in $(seq 0 9); do curl -s 'http://localhost:10007/solr/ds/mlt' -d 'mlt.interestingTerms=list' -d 'mlt.fl=text' -d "q=$Q" -d 'fl=id' -d 'mlt.match.include=true' -d 'mlt.mintf=2' -d 'mlt.mindf=2' -d 'mlt.boost=true' -d 'mlt.maxntp=100000' -d 'mlt.qf=text' -d 'mlt.maxqt=10' -d 'mlt.maxdfpct=50' -d "mlt.match.offset=$O" | jq -c ' .interestingTerms ' ; done
+
+Q='*:*' ; for O in $(seq 0 25); do curl -s 'http://localhost:10007/solr/ds/mlt' -d 'mlt.interestingTerms=list' -d 'mlt.fl=text' -d "q=$Q" -d 'fl=id' -d 'mlt.match.include=true' -d 'mlt.mintf=2' -d 'mlt.mindf=2' -d 'mlt.boost=true' -d 'mlt.maxntp=100000' -d 'mlt.qf=text' -d 'mlt.maxqt=10' -d 'mlt.maxdfpct=50' -d "mlt.match.offset=$O" | jq -c '[ .match.docs[].id, .interestingTerms ]' ; done
+
+
+
 
 ### Caveats
 
@@ -99,3 +106,6 @@ This first take relies on the letter gamma (ɣ) and inserts timetags directly in
 * For plain text retrieval, the caller needs to filter the timetags from the result. It is solvable by having a parallel field without timetags, but that of course increases index size.
 * Phrase searches are affected as timestamps might appear inside of sentences. It is technically solvable by adjusting offsets for the timetags. Currently it is unknown if this can be done without witing a custom Solr index plugin.
 
+## TODO
+
+Read and experiment with https://solr.apache.org/guide/8_10/machine-learning.html
