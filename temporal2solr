@@ -7,6 +7,7 @@
 : ${SRC:="$1"}
 # Possible values:
 # srt:     Check the SRT format
+# vtt:     Check the VTT format
 # hms:     01:23:45
 # hmsms:   00:02:08.64-00:02:12.64 / 00:01:52.0-00:01:53.0
 # seconds: 123.45
@@ -70,6 +71,36 @@ timetag_srt() {
         fi
     done
 }
+ # Input: 00:01:05.789 --> 00:01:08.839
+# Output: 00065789
+milliseconds_vtt() {
+    local LINE="$1"
+    local MS=$(echo "${LINE:0:2}*60*60+${LINE:3:2}*60+${LINE:6:2}" | bc) # seconds
+    alignl "$MS${LINE:9:3}" 8
+}
+timetag_vtt() {
+    # Note: VTT has \r at the end of each line
+    MODE=1
+    # Tail to skip header
+    # WEBVTT
+    #
+    tail -n+3 "$SRC" | tr -d '\r' | while read -r LINE; do
+        if [[ $MODE -eq 1 ]]; then
+            # 00:01:05.789 --> 00:01:08.839
+            echo -n 'ɣ'"$(milliseconds_vtt "$LINE")"'ɣ'
+            MODE=2
+            continue
+        fi
+        if [[ $MODE -eq 2 ]]; then
+            if [[ "." == ".$LINE" ]]; then
+                echo ""
+                MODE=1
+                continue
+            fi
+            echo -n " $LINE"
+        fi
+    done
+}
 
 
 # Input: 00:02:12.64-00:02:16.56  der var væltet op af Tivolis udermur, så lydte der et ordentligt knæk,
@@ -121,6 +152,9 @@ timetag() {
     case $FORMAT in
         srt)
             timetag_srt
+            ;;
+        vtt)
+            timetag_vtt
             ;;
         hms)
             timetag_hms
