@@ -109,3 +109,10 @@ This first take relies on the letter gamma (ɣ) and inserts timetags directly in
 ## TODO
 
 Read and experiment with https://solr.apache.org/guide/8_10/machine-learning.html
+
+
+### vtt
+
+Delivery from Lars Mydtskov: 6139 subtitles
+
+FORMAT=vtt ./temporal2solr vtt/dr-streaming/*.vtt
