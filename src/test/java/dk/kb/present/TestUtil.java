@@ -17,11 +17,16 @@ import dk.kb.present.transform.XSLTFactory;
 import dk.kb.present.transform.XSLTTransformer;
 import dk.kb.util.Resolver;
 import dk.kb.util.yaml.YAML;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static dk.kb.present.solr.EmbeddedSolrTest.MODS2SOLR;
 import static dk.kb.present.solr.EmbeddedSolrTest.PRESERVICA2SOLR;
+import static dk.kb.present.transform.XSLTPreservicaToSolrTransformerTest.SCHEMA2SOLR;
 
 public class TestUtil {
+	private static final Logger log = LoggerFactory.getLogger(TestUtil.class);
+
 
 
 	public static String getTransformed(String xsltResource, String xmlResource) throws IOException {
@@ -67,7 +72,7 @@ public class TestUtil {
 		XSLTTransformer transformer = new XSLTTransformer(xsltResource, injections);
 		String xml = Resolver.resolveUTF8String(xmlResource);
 		HashMap<String, String> metadata = XsltCopyrightMapper.applyXsltCopyrightTransformer(xml);
-		String childData = Resolver.resolveUTF8String("internal_test_files/tvMetadata/33e30aa9-d216-4216-aabf-b28d2b465215.xml");
+		String childData = Resolver.resolveUTF8String(TestFiles.PVICA_RECORD_33e30aa9);
 
 		metadata.put("recordID", "ds.test:" + Path.of(xmlResource).getFileName().toString());
 		metadata.put("streamingserver", "www.example.com/streaming/");
@@ -94,6 +99,24 @@ public class TestUtil {
 		metadata.put("origin", "ds.test");
 		//System.out.println("access fields:"+metadata);
 		return transformer.apply(xml, metadata);
+	}
+
+	/**
+	 * Transforms the inputted XML with the given transformer to schema.org compliant JSON, then transforms the
+	 * schema.org JSON to solr documents.
+	 * @param schemaOrgTransformer used to transform from origin specific format to general schema.org json.
+	 * @return a solr document ready for indexing, created from the schema.org representation of the inputted XML.
+	 */
+	public static String getTransformedToSolrJsonThroughSchemaJson(String schemaOrgTransformer, String record) throws IOException {
+		Map<String, String> injections = Map.of("imageserver", "https://example.com/imageserver/",
+				"streamingserver" ,"https://www.example.com/streamingserver/");
+		String schemaOrgJson = TestUtil.getTransformedWithAccessFieldsAdded(schemaOrgTransformer, record, injections);
+		log.debug("Input XML gets transformed to this schema.org JSON: '{}'", schemaOrgJson);
+
+		String placeholderXml = "placeholder.xml";
+		Map<String, String> mapOfJson = Map.of("schemaorgjson", schemaOrgJson);
+		String solrJson = TestUtil.getTransformedWithAccessFieldsAdded(SCHEMA2SOLR, placeholderXml, mapOfJson);
+		return solrJson;
 	}
 
 	/**

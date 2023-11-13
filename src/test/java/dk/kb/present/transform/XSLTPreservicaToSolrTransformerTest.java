@@ -1,6 +1,8 @@
 package dk.kb.present.transform;
 
+import dk.kb.present.TestFiles;
 import dk.kb.present.TestUtil;
+import dk.kb.present.util.TestFileProvider;
 import dk.kb.util.Resolver;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
@@ -9,10 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.function.Consumer;
 
+import static dk.kb.present.transform.XSLTPreservicaSchemaOrgTransformerTest.PRESERVICA2SCHEMAORG;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -23,21 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase {
 
     public static final String PRESERVICA2SOLR = "xslt/preservica2solr.xsl";
-    public static final String RECORD_44979f67 = "internal_test_files/tvMetadata/44979f67-b563-462e-9bf1-c970167a5c5f.xml";
-    public static final String RECORD_5a5357be = "internal_test_files/tvMetadata/5a5357be-5890-472a-a294-41a99f108936.xml";
-    public static final String RECORD_a8aafb121 = "internal_test_files/tvMetadata/a8afb121-e8b8-467a-8704-10dc42356ac4.xml";
-    public static final String RECORD_1f3a6a66 = "internal_test_files/tvMetadata/1f3a6a66-5f5a-48e6-abbf-452552320176.xml";
-    public static final String RECORD_74e22fd8 = "internal_test_files/tvMetadata/74e22fd8-1268-4bcf-8a9f-22ca25379ea4.xml";
-    public static final String RECORD_3945e2d1 = "internal_test_files/tvMetadata/3945e2d1-83a2-40d8-af1c-30f7b3b94390.xml";
-    public static final String RECORD_4b18d02d = "internal_test_files/tvMetadata/4b18d02d-a421-4026-b522-66436a56bc0a.xml";
-    public static final String RECORD_68b233c3 = "internal_test_files/tvMetadata/68b233c3-f234-4546-914e-dc912f6001ae.xml";
+    public static final String SCHEMA2SOLR =  "xslt/schemaorg2solr.xsl";
 
     private static final Logger log = LoggerFactory.getLogger(XSLTPreservicaToSolrTransformerTest.class);
 
 
     @Override
     String getXSLT() {
-        return PRESERVICA2SOLR;
+        return PRESERVICA2SCHEMAORG + " AND " + SCHEMA2SOLR;
     }
 
     @BeforeAll
@@ -50,228 +46,231 @@ public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase
 
     @Test
     public void testExtraction() {
-        assertContains(RECORD_44979f67, "\"id\":\"ds.test:44979f67-b563-462e-9bf1-c970167a5c5f.xml\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_44979f67, "\"id\":\"ds.test:44979f67-b563-462e-9bf1-c970167a5c5f.xml\"");
     }
 
     @Test
     public void testTitles() {
-        assertContains(RECORD_44979f67, "\"title\":\"Backstage II\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_44979f67, "\"title\":\"Backstage II\"");
 
-        assertContains(RECORD_5a5357be, "\"title\":\"Dr. Pimple Popper: Before The Pop\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_5a5357be, "\"title\":\"Dr. Pimple Popper: Before The Pop\"");
     }
 
     @Test
     public void testDirectDuration() {
-        assertContains(RECORD_44979f67,"\"duration_ms\":\"950000\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_44979f67,"\"duration_ms\":\"950000\"");
     }
 
     @Test
     public void testCalculatedDuration() {
-        assertContains(RECORD_5a5357be,"\"duration_ms\":\"1800000\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_5a5357be,"\"duration_ms\":\"1800000\"");
     }
 
     @Test
     public void testGenrePresent() {
-        assertContains(RECORD_44979f67, "\"genre\":\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_44979f67, "\"genre\":\"");
     }
 
     @Test
     void testGenreContent() {
-        assertContains(RECORD_a8aafb121,"\"categories\":[\"Serier\",\"Krimiserie\"");
-        assertNotContains(RECORD_a8aafb121, "\"categories\":[\"hovedgenre: Serier ritzau\",\"undergenre: Krimiserie ritzau\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_a8aafb121,"\"categories\":[\"Serier\",\"Krimiserie\"");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_a8aafb121, "\"categories\":[\"hovedgenre: Serier ritzau\",\"undergenre: Krimiserie ritzau\"");
     }
 
     @Test
     void testEmptyGenre(){
-        assertNotContains(RECORD_68b233c3, "\"categories\":");
-        assertNotContains(RECORD_68b233c3, "\"genre\":");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_68b233c3, "\"categories\":");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_68b233c3, "\"genre\":");
     }
 
     @Test
-    void testMainGenre() throws Exception {
-        assertContains(RECORD_a8aafb121,"\"genre\":\"Serier\"");
+    void testMainGenre() {
+        assertPvicaContains(TestFiles.PVICA_RECORD_a8aafb121,"\"genre\":\"Serier\"");
     }
 
     @Test
     void testSubGenre() {
-        assertContains(RECORD_a8aafb121, "\"genre_sub\":\"Krimiserie\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_a8aafb121, "\"genre_sub\":\"Krimiserie\"");
     }
 
     @Test
     public void testNoGenre() {
-        assertNotContains(RECORD_5a5357be, "\"genre\":[\"");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_5a5357be, "\"genre\":[\"");
     }
 
     @Test
     public void testResourceDescription() {
-        assertNotContains(RECORD_5a5357be, "\"resource_description\": \"Moving Image\"");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_5a5357be, "\"resource_description\": \"Moving Image\"");
     }
 
     @Test
     public void testCollection() {
-        assertNotContains(RECORD_5a5357be, "\"collection\": \"Det Kgl. Bibliotek; Radio/TV-Samlingen\"");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_5a5357be, "\"collection\": \"Det Kgl. Bibliotek; Radio/TV-Samlingen\"");
     }
 
     @Test
     public void testCreatorAffiliation() {
-        assertNotContains(RECORD_5a5357be, "\"creator_affiliation\": \"DR Ultra\"");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_5a5357be, "\"creator_affiliation\": \"DR Ultra\"");
     }
 
     @Test
     public void testNotes() {
-        assertContains(RECORD_a8aafb121, "\"notes\":[\"Eng. krimiserie\",\"To begravelser er planlagt.");
+        assertPvicaContains(TestFiles.PVICA_RECORD_a8aafb121, "\"notes\":[\"Eng. krimiserie\",\"To begravelser er planlagt.");
     }
 
     @Test
     void testDescription() {
-        assertContains(RECORD_a8aafb121, "\"description\":\"To begravelser er planlagt. Den ene for Sir Magnus Pye, den anden for Alan Conway.");
+        assertPvicaContains(TestFiles.PVICA_RECORD_a8aafb121, "\"description\":\"To begravelser er planlagt. Den ene for Sir Magnus Pye, den anden for Alan Conway.");
     }
 
     @Test
     void testShortDescription(){
-        assertContains(RECORD_a8aafb121, "\"abstract\":\"Eng. krimiserie\",");
+        assertPvicaContains(TestFiles.PVICA_RECORD_a8aafb121, "\"abstract\":\"Eng. krimiserie\",");
     }
 
 
     @Test
     public void testOrigin(){
-        assertContains(RECORD_5a5357be, "\"origin\":\"ds.test\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_5a5357be, "\"origin\":\"ds.test\"");
     }
 
     @Test
     void testEpisode(){
-        assertContains(RECORD_a8aafb121, "\"episode\":");
-        assertNotContains(RECORD_1f3a6a66, "\"episode\":");
+        assertPvicaContains(TestFiles.PVICA_RECORD_a8aafb121, "\"episode\":");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_1f3a6a66, "\"episode\":");
     }
 
     @Test
-    void testNumberOfEpisodes(){
-        assertContains(RECORD_a8aafb121, "\"number_of_episodes\":");
-        assertNotContains(RECORD_5a5357be, "\"number_of_episodes\":");
-        assertNotContains(RECORD_1f3a6a66, "\"number_of_episodes\":");
+    void testNumberOfEpisodes() throws IOException {
+        String transformedJSON = TestUtil.getTransformedWithAccessFieldsAdded(PRESERVICA2SCHEMAORG, TestFiles.PVICA_RECORD_a8aafb121);
+        TestUtil.prettyPrintJson(transformedJSON);
+
+        assertPvicaContains(TestFiles.PVICA_RECORD_a8aafb121, "\"number_of_episodes\":");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_5a5357be, "\"number_of_episodes\":");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_1f3a6a66, "\"number_of_episodes\":");
     }
 
     @Test
     void testEpisodeButNoTotalNumberOfEpisodes(){
-        assertContains(RECORD_44979f67, "\"episode\"");
-        assertNotContains(RECORD_44979f67, "\"number_of_episode\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_44979f67, "\"episode\"");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_44979f67, "\"number_of_episode\"");
     }
 
     @Test
     void testLive(){
-        assertContains(RECORD_74e22fd8, "\"live_broadcast\":\"true\"");
-        assertContains(RECORD_a8aafb121, "\"live_broadcast\":\"false\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_74e22fd8, "\"live_broadcast\":\"true\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_a8aafb121, "\"live_broadcast\":\"false\"");
     }
 
     @Test
     void testEpisodeTitle(){
-        assertContains(RECORD_3945e2d1, "\"episode_title\":\"Kagerester\"");
-        assertNotContains(RECORD_74e22fd8, "\"episode_title\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"episode_title\":\"Kagerester\"");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_74e22fd8, "\"episode_title\"");
     }
 
     @Test
     void testVideoQuality(){
         //ikke hd
-        assertContains(RECORD_5a5357be, "\"video_quality\":\"ikke hd\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_5a5357be, "\"video_quality\":\"ikke hd\"");
         //Not defined
-        assertNotContains(RECORD_1f3a6a66, "\"video_quality\":");
+        assertPvicaNotContains(TestFiles.PVICA_RECORD_1f3a6a66, "\"video_quality\":");
         //TODO: We dont have any test files that are HD=true. Either find one when more data is available or create a mock
     }
 
     @Test
     void testSurround(){
-        assertContains(RECORD_5a5357be, "\"surround_sound\":\"false\"");
-        assertContains(RECORD_4b18d02d, "\"surround_sound\":\"true\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_5a5357be, "\"surround_sound\":\"false\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_4b18d02d, "\"surround_sound\":\"true\"");
 
     }
 
     @Test
     void testInternalFormatIdentifier(){
-        assertContains(RECORD_3945e2d1, "\"internal_format_identifier_ritzau\":\"81318588\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_format_identifier_ritzau\":\"81318588\"");
     }
 
     @Test
     void testRetransmission(){
-        assertContains(RECORD_44979f67, "\"retransmission\":\"true\"");
-        assertContains(RECORD_4b18d02d, "\"retransmission\":\"false\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_44979f67, "\"retransmission\":\"true\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_4b18d02d, "\"retransmission\":\"false\"");
     }
 
     @Test
     void testHovedgenreId() {
-        assertContains(RECORD_3945e2d1,"\"internal_maingenre_id\":\"10\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1,"\"internal_maingenre_id\":\"10\"");
     }
 
     @Test
     void testChannelId(){
-        assertContains(RECORD_3945e2d1, "\"internal_channel_id\":\"3\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_channel_id\":\"3\"");
     }
 
     @Test
     void testCountryOfOriginId(){
-        assertContains(RECORD_3945e2d1, "\"internal_country_of_origin_id\":\"0\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_country_of_origin_id\":\"0\"");
     }
 
     @Test
     void testRitzauProgramID(){
-        assertContains(RECORD_3945e2d1, "\"internal_ritzau_program_id\":\"25101143\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_ritzau_program_id\":\"25101143\"");
     }
 
     @Test
     void testProgramOphold(){
-        assertContains(RECORD_3945e2d1, "\"internal_program_ophold\":\"false\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_program_ophold\":\"false\"");
         //TODO: Test true value with test file which contains program_ophold:program_ophold
     }
 
     @Test
     void testSubGenreId(){
-        assertContains(RECORD_3945e2d1, "\"internal_subgenre_id\":\"736\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_subgenre_id\":\"736\"");
     }
 
     @Test
     void testEpisodeId(){
-        assertContains(RECORD_3945e2d1, "\"internal_episode_id\":\"0\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_episode_id\":\"0\"");
     }
 
     @Test
     void testSeasonId(){
-        assertContains(RECORD_3945e2d1, "\"internal_season_id\":\"174278\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_season_id\":\"174278\"");
     }
+
     @Test
     void testSeriesId(){
-        assertContains(RECORD_3945e2d1, "\"internal_series_id\":\"146180\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_series_id\":\"146180\"");
     }
     @Test
     void testSubtitles(){
-        assertContains(RECORD_3945e2d1, "\"has_subtitles\":\"false\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"has_subtitles\":\"false\"");
         // TODO: Create test for has_subtitles:true, with custom test file
     }
-
     @Test
     void testSubtitlesHearingImpaired(){
-        assertContains(RECORD_3945e2d1, "\"has_subtitles_for_hearing_impaired\":\"false\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"has_subtitles_for_hearing_impaired\":\"false\"");
         // TODO: Create test for has_subtitles_for_hearing_impaired:true, with custom test file
-    }
-    @Test
-    void testTeletext(){
-        assertContains(RECORD_3945e2d1, "\"internal_is_teletext\":\"false\"");
-        // TODO: Create test for internal_is_teletext:true, with custom test file
     }
 
     @Test
+    void testTeletext(){
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_is_teletext\":\"false\"");
+        // TODO: Create test for internal_is_teletext:true, with custom test file
+    }
+    @Test
     void testShowviewcode(){
-        assertContains(RECORD_3945e2d1, "\"internal_showviewcode\":\"0\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_showviewcode\":\"0\"");
         // TODO: Create test for internal_is_teletext:true, with custom test file
     }
 
     @Test
     void testPaddingSeconds(){
-        assertContains(RECORD_3945e2d1, "\"internal_padding_seconds\":\"15\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_padding_seconds\":\"15\"");
         // TODO: Create test for internal_is_teletext:true, with custom test file
     }
 
     @Test
     void testAccessMetadata(){
-        assertContains(RECORD_3945e2d1, "\"internal_access_individual_prohibition\":\"Nej\"," +
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"internal_access_individual_prohibition\":\"Nej\"," +
                                                  "\"internal_access_claused\":\"Nej\"," +
                                                  "\"internal_access_malfunction\":\"Nej\"");
         //TODO: Add test that contains internal_access_comments
@@ -279,12 +278,12 @@ public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase
 
     @Test
     void testPid(){
-        assertContains(RECORD_3945e2d1, "\"pid\":\"109.1.4\\/3945e2d1-83a2-40d8-af1c-30f7b3b94390\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_3945e2d1, "\"pid\":\"109.1.4\\/3945e2d1-83a2-40d8-af1c-30f7b3b94390\"");
     }
 
     @Test
     void testProgramStructure(){
-        assertContains(RECORD_1f3a6a66, "\"internal_program_structure_missing_seconds_start\":\"0\"," +
+        assertPvicaContains(TestFiles.PVICA_RECORD_1f3a6a66, "\"internal_program_structure_missing_seconds_start\":\"0\"," +
                                                  "\"internal_program_structure_missing_seconds_end\":\"0\"");
 
         //TODO: add tests for fields 'holes' and 'overlaps' with a constructed test file.
@@ -292,23 +291,73 @@ public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase
 
     @Test
     void testStartTime(){
-        assertContains(RECORD_1f3a6a66, "\"startTime\":\"2012-04-28T16:15:00Z\"");
-    }
-    @Test
-    void testEndTime(){
-        assertContains(RECORD_1f3a6a66, "\"endTime\":\"2012-04-28T16:40:00Z\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_1f3a6a66, "\"startTime\":\"2012-04-28T16:15:00Z\"");
     }
 
     @Test
+    void testEndTime(){
+        assertPvicaContains(TestFiles.PVICA_RECORD_1f3a6a66, "\"endTime\":\"2012-04-28T16:40:00Z\"");
+    }
+    @Test
     void testStreamingUrl() throws IOException {
-        String solrJson = TestUtil.getTransformedWithVideoChildAdded(PRESERVICA2SOLR, RECORD_1f3a6a66, null);
+        String solrJson = TestUtil.getTransformedWithVideoChildAdded(PRESERVICA2SOLR, TestFiles.PVICA_RECORD_1f3a6a66, null);
         assertTrue(solrJson.contains("\"www.example.com\\/streaming\\/mp4:bart-access-copies-tv\\/cf\\/1d\\/b0\\/cf1db0e1-ade2-462a-a2b4-7488244fcca7\\/playlist.m3u8\""));
     }
 
-
     @Test
     public void prettyPrintTransformation() throws Exception {
-        TestUtil.prettyPrintSolrJsonFromPreservica(RECORD_44979f67);
+        TestUtil.prettyPrintSolrJsonFromPreservica(TestFiles.PVICA_RECORD_44979f67);
+    }
+
+    /**
+     * Wrapper for {@link #assertMultiTestsThroughSchemaTransformation(String, Consumer[])} which verifies that the
+     * transformed record contains the given {@code substring}.
+     * @param recordFile the file to load, transform and test.
+     * @param substring must be present in the transformed record.
+     */
+    public void assertPvicaContains(String recordFile, String substring) {
+        assertMultiTestsThroughSchemaTransformation(recordFile,
+                solrDoc -> assertTrue(solrDoc.contains(substring))
+        );
+    }
+
+    /**
+     * Wrapper for {@link #assertMultiTestsThroughSchemaTransformation(String, Consumer[])} which verifies that the
+     * transformed record does not contain the given {@code substring}.
+     * @param recordFile the file to load, transform and test.
+     * @param substring must be present in the transformed record.
+     */
+    public void assertPvicaNotContains(String recordFile, String substring) {
+        assertMultiTestsThroughSchemaTransformation(recordFile,
+                solrDoc -> assertFalse(solrDoc.contains(substring))
+        );
+    }
+
+    /**
+     * Checks that internal test files are available and if not, logs a warning and returns.
+     * <p>
+     * If the check passes, the content of the file {@code record} is transformed using two XSLTs.
+     * At first the XML record is transformed to Schema.org JSON and then the schema.org JSON is transformed to solr
+     * documents and the given tests are performed on the result.
+     * @param record file with a record that is to be transformed.
+     * @param tests Zero or more tests to perform on the transformed record.
+     */
+    @SafeVarargs
+    public final void assertMultiTestsThroughSchemaTransformation(String record, Consumer<String>... tests){
+        if (!TestFileProvider.hasSomeTestFiles()) {
+            return;  // ensureTestFiles takes care of logging is there are no internal test files
+        }
+        String solrString;
+        try {
+            solrString = TestUtil.getTransformedToSolrJsonThroughSchemaJson(PRESERVICA2SCHEMAORG, record);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    "Unable to fetch and transform '" + record + "' using XSLT '" + getXSLT() + "'", e);
+        }
+
+        //TestUtil.prettyPrintJson(solrString);
+
+        Arrays.stream(tests).forEach(test -> test.accept(solrString));
     }
 
 
