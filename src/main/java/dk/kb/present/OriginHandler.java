@@ -14,6 +14,7 @@
  */
 package dk.kb.present;
 
+import dk.kb.present.model.v1.FormatDto;
 import dk.kb.present.storage.Storage;
 import dk.kb.util.webservice.exception.InvalidArgumentServiceException;
 import dk.kb.util.webservice.exception.NotFoundServiceException;
@@ -34,9 +35,9 @@ import java.util.stream.Collectors;
  */
 public class OriginHandler {
     private static final Logger log = LoggerFactory.getLogger(OriginHandler.class);
-    private static final String ORIGINS_KEY = ".config.origins";
-    private static final String RECORD_ID_PATTERN_KEY = ".config.record.id.pattern";
-    private static final String ORIGIN_ID_PATTERN_KEY = ".config.origin.prefix.pattern";
+    private static final String ORIGINS_KEY = ".origins";
+    private static final String RECORD_ID_PATTERN_KEY = ".record.id.pattern";
+    private static final String ORIGIN_ID_PATTERN_KEY = ".origin.prefix.pattern";
 
     private final StorageHandler storageHandler;
     private final Map<String, DSOrigin> originsByPrefix; // prefix, origin
@@ -47,7 +48,7 @@ public class OriginHandler {
     /**
      * Creates a {@link StorageHandler} and a set of {@link Storage}s based on the given configuration.
      * @param conf top-level configuration. The parts for this handler is expected to be found at
-     * {@code .config.origins} and {@code .config.record.id.pattern}
+     * {@code .origins} and {@code .record.id.pattern}
      */
     public OriginHandler(YAML conf) {
         try {
@@ -81,7 +82,7 @@ public class OriginHandler {
         log.info("Created " + this);
     }
 
-    public String getRecord(String id, String format) throws NotFoundServiceException {
+    public String getRecord(String id, FormatDto format) throws NotFoundServiceException {
         Matcher matcher = recordIDPattern.matcher(id);
         if (!matcher.matches()) {
             throw new InvalidArgumentServiceException(
