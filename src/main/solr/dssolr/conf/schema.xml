@@ -21,8 +21,11 @@ In solrconfig.xml the classic schema is defined with this:  <schemaFactory class
        Update this according to Semantic Versioning rules: https://semver.org/
 
        Used by scripts for keeping track of versioning of Solr setup across time and Solr instances.
+
+1.0.1: Added text_shingles
+1.0.2: Defined 'snowball' for all stopword filters
   -->
-  <field name="_ds_1.0.0_" type="string" indexed="false" stored="false"/>
+  <field name="_ds_1.0.2_" type="string" indexed="false" stored="false"/>
 
   <uniqueKey>id</uniqueKey>
 
@@ -796,6 +799,11 @@ In solrconfig.xml the classic schema is defined with this:  <schemaFactory class
     <?example     If a television recording with subtitles is indexed, this field will hold the subtitles and only the subtitles.?>
   </field>
 
+  <field name="text_shingles" type="text_shingles">
+    <?description Content text field for newspaper article main text, book full text, television subtitles, radio transcriptions etc. This differs from "text" by being shingled up to 4 tokens, which should make it more useful for automatic keyword extraction.?>
+    <?example     If a television recording with subtitles is indexed, this field will hold the subtitles and only the subtitles.?>
+  </field>
+
   <!-- Most fields are copied to this field for matching. -->
   <field name="freetext" type="freetext" multiValued="true" stored="false">
     <?description Freetext field, which contains text from multiple other fields.
@@ -849,13 +857,32 @@ In solrconfig.xml the classic schema is defined with this:  <schemaFactory class
   <fieldType name="text_general" class="solr.TextField" multiValued="false" indexed="true" required="false" stored="true"  termVectors="true" storeOffsetsWithPositions="true">
     <analyzer type="index">
        <tokenizer class="solr.StandardTokenizerFactory"/>
-       <filter class="solr.StopFilterFactory" words="lang/stopwords_da.txt"/>
+       <filter class="solr.StopFilterFactory" words="lang/stopwords_da.txt" format="snowball"/>
        <filter class="solr.LowerCaseFilterFactory"/>
     </analyzer>
     <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
-      <filter class="solr.StopFilterFactory" words="lang/stopwords_da.txt"/>
+      <filter class="solr.StopFilterFactory" words="lang/stopwords_da.txt" format="snowball"/>
       <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+  </fieldType>
+
+  <!-- TODO: Consider setting multi value distance fairly short for phrase search across
+       timestamped Whisper output -->
+  <!-- https://solr.apache.org/guide/solr/latest/indexing-guide/filters.html#shingle-filter -->
+  <fieldType name="text_shingles" class="solr.TextField" multiValued="true" indexed="true" required="false" stored="false"  termVectors="true" storeOffsetsWithPositions="true">
+    <analyzer>
+      <tokenizer name="standard"/>
+       <filter class="solr.LowerCaseFilterFactory"/>
+       <filter class="solr.StopFilterFactory" words="lang/stopwords_da.txt" format="snowball" />
+       <!-- Max shingles size 4 is just a "best guess right now".
+            It should be tweaked when a corpus of tens of thousands of documents has been indexed.
+            Unigrams are kept for use with keyword extraction using MoreLikeThis -->
+       <!-- https://stackoverflow.com/questions/18885764/lucene-analyzer-chain-shinglefilter-without-filler-tokens -->
+       <filter name="shingle" maxShingleSize="4" outputUnigrams="true" fillerToken="___" />
+       <filter class="solr.PatternReplaceFilterFactory" pattern=".*___.*" replacement=""/>
+       <!-- Remove embedded timestamp tokens (only used in the 'text' field for temporal search via highlights) -->
+       <filter class="solr.PatternReplaceFilterFactory" pattern="ɣ[0-9]+ɣ" replacement=""/>        
     </analyzer>
   </fieldType>
 
@@ -874,13 +901,13 @@ In solrconfig.xml the classic schema is defined with this:  <schemaFactory class
     <analyzer type="index">
       <tokenizer class="solr.StandardTokenizerFactory"/>
       <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-FoldToASCII.txt"/>
-      <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_da.txt"/>
+      <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_da.txt" format="snowball"/>
       <filter class="solr.LowerCaseFilterFactory"/>
     </analyzer>
     <analyzer type="query">
       <tokenizer class="solr.StandardTokenizerFactory"/>
       <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-FoldToASCII.txt"/>
-      <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_da.txt"/>
+      <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_da.txt" format="snowball"/>
       <filter class="solr.LowerCaseFilterFactory"/>
     </analyzer>
   </fieldType>
@@ -928,6 +955,10 @@ In solrconfig.xml the classic schema is defined with this:  <schemaFactory class
   <copyField source="subtitle" dest="freetext"/>
   <copyField source="alternative_title" dest="freetext"/>
   <copyField source="original_title" dest="freetext"/>
+
+  <copyField source="text" dest="text_shingles">
+    <?description Copies the content of the basic text field to the shingles enabled text field, for better phrase search ranking and keyword extraction.?>
+  </copyField>
 
   <!-- END COPYFIELDS  -->
  </schema>
