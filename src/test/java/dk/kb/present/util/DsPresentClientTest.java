@@ -77,6 +77,7 @@ public class DsPresentClientTest {
         }
     }
 
+    
     @Test
     public void testRemoteRecordsStream() throws IOException {
        if (remote == null) {

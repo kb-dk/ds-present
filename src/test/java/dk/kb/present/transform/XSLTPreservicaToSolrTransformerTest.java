@@ -379,17 +379,17 @@ public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase
     void testMTime() {
         assertPvicaContains(TestFiles.PVICA_RECORD_1f3a6a66, "\"internal_storage_mTime\":\"");
     }
-
+       
     @Test
     void testOriginForFailedTransformation(){
         assertPvicaContains(TestFiles.PVICA6_RECORD_d4ea826f, "\"origin\":");
     }
-
+     
     @Test
     void testNoEmptyGenreSubField(){
         assertPvicaNotContains(TestFiles.PVICA_RECORD_53ce4817, "\"genre_sub\"");
     }
-
+    
     @Test
     void testNoSpecificOrigin(){
         assertPvicaContains(TestFiles.PVICA_RECORD_5b29fca1, "\"origin\"");
