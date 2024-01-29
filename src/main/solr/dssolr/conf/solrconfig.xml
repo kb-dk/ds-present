@@ -875,7 +875,7 @@
         Load tokens from the following field for spell checking,
         analyzer for the field's type as defined in schema.xml are used
     -->
-    <str name="field">spell</str>
+    <str name="field">freetext</str>
     <!-- Optional, by default use in-memory index (RAMDirectory) -->
     <str name="spellcheckIndexDir">./spellchecker</str>
     <!-- Set the accuracy (float) to be used for the suggestions. Default is 0.5 -->
@@ -884,6 +884,7 @@
     <float name="thresholdTokenFrequency">.0001</float>
   </lst>
   <!-- a spellchecker that can break or combine words. (Solr 4.0 see SOLR-2993) -->
+ <!-- 
   <lst name="spellchecker">
     <str name="name">wordbreak</str>
     <str name="classname">solr.WordBreakSolrSpellChecker</str>
@@ -892,15 +893,16 @@
     <str name="breakWords">true</str>
     <int name="maxChanges">3</int>
   </lst>
+  -->
   <!-- Example of using different distance measure -->
+ <!-- 
   <lst name="spellchecker">
     <str name="name">jarowinkler</str>
     <str name="field">lowerfilt</str>
-    <!-- Use a different Distance Measure -->
     <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
     <str name="spellcheckIndexDir">./spellchecker</str>
   </lst>
-
+ -->
   <!-- This field type's analyzer is used by the QueryConverter to tokenize the value for "q" parameter -->
   <str name="queryAnalyzerFieldType">textSpell</str>
 </searchComponent>
