@@ -809,7 +809,9 @@
        <str name="hl.fl">notes</str>
         
      </lst>
-         
+       <arr name="last-components">
+         <str>spellcheck</str>
+       </arr>
     </requestHandler>
 
 
