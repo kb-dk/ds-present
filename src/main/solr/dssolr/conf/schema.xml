@@ -885,7 +885,7 @@ In solrconfig.xml the classic schema is defined with this:  <schemaFactory class
     <?example     Query for "romeo" will return nothing, while a query for "romeo and juliet" will return the titel?>
   </field>
 
-  <field name="spellcheck" type="text_en" indexed="true" stored="true" multiValued="true" 
+  <field name="spellcheck" type="text_general" indexed="true" stored="true" multiValued="true" 
                    termVectors="true"
                    termPositions="true"
                    termOffsets="true"/>
