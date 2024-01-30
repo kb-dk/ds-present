@@ -888,12 +888,12 @@
   </lst>
 </searchComponent>
  -->
- <!-- 
+  
  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-    <str name="queryAnalyzerFieldType">text_general</str>
+    <str name="queryAnalyzerFieldType">spellcheck</str>
     <lst name="spellchecker">
       <str name="name">default</str>
-      <str name="field">title</str>
+      <str name="field">spellcheck</str>
       <str name="classname">solr.DirectSolrSpellChecker</str>
       <str name="distanceMeasure">internal</str>
       <float name="accuracy">0.5</float>
@@ -904,7 +904,8 @@
       <float name="maxQueryFrequency">0.5</float>
     </lst>
   </searchComponent>
- -->
+ 
+ <!-- Denne virker med "thoma"
  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
     <str name="queryAnalyzerFieldType">spellcheck</str>
     <lst name="spellchecker">
@@ -922,7 +923,7 @@
       <float name="maxQueryFrequency">0.5</float>
     </lst>
   </searchComponent>
- 
+  -->
  
  <requestHandler name="/spell" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
