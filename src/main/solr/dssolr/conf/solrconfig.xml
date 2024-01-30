@@ -810,7 +810,7 @@
        
        
       
-      <str name="spellcheck">true</str>
+      <str name="spellcheck">true</str>      
       <str name="spellcheck.dictionary">default</str>
       <str name="spellcheck.df">spellcheck</str>
       <str name="df">spellcheck</str>
@@ -906,7 +906,7 @@
   </searchComponent>
  -->
  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-    <str name="queryAnalyzerFieldType">text_general</str>
+    <str name="queryAnalyzerFieldType">spellcheck</str>
     <lst name="spellchecker">
                   
       <str name="name">default</str>
