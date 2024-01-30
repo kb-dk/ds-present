@@ -810,7 +810,7 @@
        
        
       
-      <str name="spellcheck">true</str>      
+      <!--  <str name="spellcheck">true</str> Enable to set it default-->      
       <str name="spellcheck.dictionary">default</str>
       <str name="spellcheck.df">spellcheck</str>
       <str name="df">spellcheck</str>
@@ -876,18 +876,6 @@
     </lst>
   </searchComponent>
 
-<!-- 
-<searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-  <lst name="spellchecker">
-    <str name="name">default</str>
-    <str name="classname">solr.WordBreakSolrSpellChecker</str>
-    <str name="field">spellcheck</str>
-    <str name="combineWords">true</str>
-    <str name="breakWords">true</str>
-    <int name="maxChanges">10</int>
-  </lst>
-</searchComponent>
- -->
   
  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
     <str name="queryAnalyzerFieldType">text_general</str>
