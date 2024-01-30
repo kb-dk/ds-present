@@ -810,11 +810,9 @@
        
        
       
-      <!--  <str name="spellcheck">true</str> Enable to set it default-->      
-      <str name="spellcheck.dictionary">default</str>
-      <str name="spellcheck.df">spellcheck</str>
-      <str name="df">spellcheck</str>
-      <str name="spellcheck.extendedResults">true</str>
+      <!--  <str name="spellcheck">true</str> Enable to set it default-->            
+      <str name="spellcheck.df">spellcheck</str>      
+      <str name="spellcheck.extendedResults">true</str> <!-- Probably disable later.But usefull to see what is in data -->
       <str name="spellcheck.count">10</str>
       <str name="spellcheck.alternativeTermCount">5</str>
       <str name="spellcheck.maxResultsForSuggest">5</str>
