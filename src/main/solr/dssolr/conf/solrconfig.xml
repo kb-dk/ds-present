@@ -808,7 +808,21 @@
        <str name="f.notes.hl.preserveMulti">false</str>
        <str name="hl.fl">notes</str>
        
-       <str name="spellcheck">true</str>
+       
+      <str name="spellcheck">true</str>       
+      <str name="spellcheck.dictionary">default</str>
+      <str name="spellcheck">on</str>
+      <str name="df">spellcheck</str>
+      <str name="spellcheck.extendedResults">true</str>
+      <str name="spellcheck.count">10</str>
+      <str name="spellcheck.alternativeTermCount">5</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.collate">true</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">10</str>
+      <str name="spellcheck.maxCollations">5</str>
+      <str name="spellcheck.build">true</str> 
+     
      </lst>
        <arr name="last-components">
          <str>spellcheck</str>
