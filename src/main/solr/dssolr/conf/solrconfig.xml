@@ -907,6 +907,21 @@
  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
     <str name="queryAnalyzerFieldType">text_general</str>
     <lst name="spellchecker">
+             
+      <str name="dictionary">default</str>
+      
+      <str name="df">spellcheck</str>
+      <str name="spellcheck.extendedResults">true</str>
+      <str name="spellcheck.count">10</str>
+      <str name="spellcheck.alternativeTermCount">5</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>
+      <str name="spellcheck.collate">true</str>
+      <str name="spellcheck.collateExtendedResults">true</str>
+      <str name="spellcheck.maxCollationTries">10</str>
+      <str name="spellcheck.maxCollations">5</str>
+      <str name="spellcheck.build">true</str> 
+      
+      
       <str name="name">default</str>
       <str name="field">spellcheck</str>
       <str name="classname">solr.DirectSolrSpellChecker</str>
