@@ -864,7 +864,7 @@
 
 <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
   <lst name="spellchecker">
-    <str name="name">wordbreak</str>
+    <str name="name">default</str>
     <str name="classname">solr.WordBreakSolrSpellChecker</str>
     <str name="field">spellcheck</str>
     <str name="combineWords">true</str>
