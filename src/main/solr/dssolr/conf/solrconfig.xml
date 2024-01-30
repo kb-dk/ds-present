@@ -890,7 +890,7 @@
  -->
   
  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-    <str name="queryAnalyzerFieldType">spellcheck</str>
+    <str name="queryAnalyzerFieldType">text_general</str>
     <lst name="spellchecker">
       <str name="name">default</str>
       <str name="field">spellcheck</str>
