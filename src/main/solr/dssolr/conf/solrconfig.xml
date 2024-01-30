@@ -902,6 +902,7 @@
       <int name="maxInspections">5</int>
       <int name="minQueryLength">3</int>
       <float name="maxQueryFrequency">0.5</float>
+      <float name="thresholdTokenFrequency">0.001</float>
     </lst>
   </searchComponent>
  
@@ -925,6 +926,7 @@
   </searchComponent>
   -->
  
+ <!-- 
  <requestHandler name="/spell" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
       <str name="spellcheck.dictionary">default</str>
@@ -944,46 +946,9 @@
       <str>spellcheck</str>
     </arr>
   </requestHandler>
+  -->
+
  
-<requestHandler name="/spell" class="solr.SearchHandler" startup="lazy">
-    <lst name="defaults">
-      <str name="spellcheck.dictionary">default</str>
-      <str name="spellcheck">on</str>
-      <str name="df">title</str>
-      <str name="spellcheck.extendedResults">true</str>
-      <str name="spellcheck.count">10</str>
-      <str name="spellcheck.alternativeTermCount">5</str>
-      <str name="spellcheck.maxResultsForSuggest">5</str>
-      <str name="spellcheck.collate">true</str>
-      <str name="spellcheck.collateExtendedResults">true</str>
-      <str name="spellcheck.maxCollationTries">10</str>
-      <str name="spellcheck.maxCollations">5</str>
-      <str name="spellcheck.build">true</str> 
-    </lst>
-    <arr name="last-components">
-      <str>spellcheck</str>
-    </arr>
-  </requestHandler>
- 
- 
-<searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-  <lst name="spellchecker">
-    <str name="name">default</str>
-    <str name="field">spellcheck</str>
-    <str name="classname">solr.DirectSolrSpellChecker</str>
-    <str name="distanceMeasure">internal</str>
-    <float name="accuracy">0.1</float>
-    <int name="maxEdits">2</int>
-    <int name="minPrefix">1</int>
-    <int name="maxInspections">5</int>
-    <int name="minQueryLength">4</int>
-    <int name="maxQueryLength">40</int>
-    <float name="maxQueryFrequency">4</float>
-    <float name="thresholdTokenFrequency">0.001</float>
-  </lst>
-</searchComponent>
- 
-  
   <!-- The following are some of the implicit Update Request Handlers
   <requestHandler name="/update/json" class="solr.UpdateRequestHandler">
         <lst name="invariants">
