@@ -812,6 +812,7 @@
       
       <str name="spellcheck">true</str>
       <str name="spellcheck.dictionary">default</str>
+      <str name="spellcheck.df">spellcheck</str>
       <str name="df">spellcheck</str>
       <str name="spellcheck.extendedResults">true</str>
       <str name="spellcheck.count">10</str>
