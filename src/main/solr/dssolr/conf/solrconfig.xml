@@ -861,7 +861,7 @@
     </lst>
   </searchComponent>
 
-
+<!-- 
 <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
   <lst name="spellchecker">
     <str name="name">default</str>
@@ -872,7 +872,8 @@
     <int name="maxChanges">10</int>
   </lst>
 </searchComponent>
-<!-- 
+ -->
+ 
 <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
   <lst name="spellchecker">
     <str name="name">default</str>
@@ -889,7 +890,7 @@
     <float name="thresholdTokenFrequency">10</float>
   </lst>
 </searchComponent>
- -->
+ 
   
   <!-- The following are some of the implicit Update Request Handlers
   <requestHandler name="/update/json" class="solr.UpdateRequestHandler">
