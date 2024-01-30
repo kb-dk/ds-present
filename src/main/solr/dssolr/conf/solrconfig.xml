@@ -897,7 +897,7 @@
       <str name="classname">solr.DirectSolrSpellChecker</str>
       <str name="distanceMeasure">internal</str>
       <float name="accuracy">0.5</float>
-      <int name="maxEdits">2</int>
+      <int name="maxEdits">3</int>
       <int name="minPrefix">1</int>
       <int name="maxInspections">5</int>
       <int name="minQueryLength">3</int>
