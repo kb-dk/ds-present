@@ -702,7 +702,7 @@
           <plugin>
             <groupId>dk.kb.util</groupId>
             <artifactId>injection-maven-plugin</artifactId>
-            <version>1.0.0</version>
+            <version>1.1.0-SNAPSHOT</version>
             <executions>
               <execution>
                 <goals>
@@ -711,17 +711,14 @@
               </execution>
             </executions>
             <configuration>
-              <filePath>conf/ds-present-kb-origins.yaml</filePath>
+              <filePath>conf/ds-present-*.yaml</filePath>
               <yamlResolvers>
                 <YamlResolver>
-                  <yamlType>List</yamlType>
-                  <yamlPath>origins</yamlPath>
-                  <sourceKey>origin</sourceKey>
+                  <yamlPath>origins[*].*.origin</yamlPath>
                   <destinationKey>origins</destinationKey>
                   <createEnum>true</createEnum>
                 </YamlResolver>
                 <YamlResolver>
-                  <yamlType>Single-value</yamlType>
                   <yamlPath>origins[0].'ds.radio'.origin</yamlPath>
                   <destinationKey>example_origin</destinationKey>
                 </YamlResolver>
