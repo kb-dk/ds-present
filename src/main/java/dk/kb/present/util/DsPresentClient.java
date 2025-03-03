@@ -15,17 +15,12 @@
 package dk.kb.present.util;
 
 import dk.kb.present.PresentFacade;
-import dk.kb.present.client.v1.DsPresentApi;
-import dk.kb.present.client.v1.IiifPresentationApi;
-import dk.kb.present.client.v1.ServiceApi;
-import dk.kb.present.invoker.v1.ApiClient;
-import dk.kb.present.invoker.v1.ApiException;
-import dk.kb.present.invoker.v1.Configuration;
 import dk.kb.present.model.v1.FormatDto;
 import dk.kb.present.model.v1.OriginDto;
 import dk.kb.storage.model.v1.DsRecordDto;
 import dk.kb.util.webservice.Service2ServiceRequest;
 import dk.kb.util.webservice.exception.InternalServiceException;
+import dk.kb.util.webservice.exception.ServiceException;
 import dk.kb.util.webservice.stream.ContinuationInputStream;
 import dk.kb.util.webservice.stream.ContinuationStream;
 import dk.kb.util.yaml.YAML;
@@ -51,21 +46,18 @@ import java.util.stream.Collectors;
  * In order to call the IIIF endpoints, use {@link DsPresentClient#iiif}.
  */
 @SuppressWarnings("unchecked")
-public class DsPresentClient extends DsPresentApi {
+public class DsPresentClient  {
     private static final Logger log = LoggerFactory.getLogger(DsPresentClient.class);
     private final String serviceURI;
-
+    private final static String CLIENT_URL_EXCEPTION="The client url was not constructed correct";
+    
     public static final String PRESENT_SERVER_URL_KEY = ".present.url";
     public static final String PRESENT_SERVER_HEADERS_KEY = ".present.headers";
 
     /**
-     * Sub-client for the IIIF endpoints.
-     */
-    public final IiifPresentationApi iiif;
-    /**
      * Sub-client for the service endpoints.
      */
-    public final ServiceApi service;
+    public final DsPresentClient service;
 
     /**
      * Headers used for all calls to ds-license.
@@ -128,13 +120,7 @@ public class DsPresentClient extends DsPresentApi {
      */
     @SuppressWarnings("JavadocLinkAsPlainText")
     public DsPresentClient(String serviceURI, Map<String, String>... headers) {
-        super(createApiClient(serviceURI, headers));
-        // Unfortunately we need to recreate the ApiClient as it is not retrievable from the super class
-        ApiClient apiClient = createApiClient(serviceURI, headers);
-        this.serviceURI = serviceURI;
-        this.headers = collapse(headers);
-        iiif = new IiifPresentationApi(apiClient);
-        service = new ServiceApi(apiClient);
+        this.serviceURI = serviceURI;                       
         log.info("Created OpenAPI client for '{}' with headers {}", serviceURI, headers);
     }
     
@@ -145,15 +131,15 @@ public class DsPresentClient extends DsPresentApi {
      * @return OriginDto
      * @throws ApiException if fails to make API call
      */
-    @Override
-    public OriginDto getOrigin(String id) throws ApiException {        
+    public OriginDto getOrigin(String id) throws ServiceException {        
         try {
             URI uri = new URIBuilder(serviceURI + "origin/"+id) // Id is part of path                                                                                   
                     .build();            
             return Service2ServiceRequest.httpCallWithOAuthToken(uri,"GET", new OriginDto(),null);              
         }
-        catch(Exception e) {
-            throw new ApiException(e);
+        catch(URISyntaxException e) {
+            log.error("Invalid url:"+e.getMessage());
+            throw new InternalServiceException(CLIENT_URL_EXCEPTION);             
         }                      
     }
     
@@ -163,15 +149,15 @@ public class DsPresentClient extends DsPresentApi {
     * @return List&lt;OriginDto&gt;
     * @throws ApiException if fails to make API call
     */
-    @Override
-    public List<OriginDto> getOrigins() throws ApiException {
+    public List<OriginDto> getOrigins() throws ServiceException {
         try {
             URI uri = new URIBuilder(serviceURI + "origins/") // Id is part of path                                                                                   
                     .build();            
             return Service2ServiceRequest.httpCallWithOAuthToken(uri,"GET", new ArrayList<OriginDto>(),null);              
         }
-        catch(Exception e) {
-            throw new ApiException(e);
+        catch(URISyntaxException e) {
+            log.error("Invalid url:"+e.getMessage());
+            throw new InternalServiceException(CLIENT_URL_EXCEPTION);             
         }
         
     }
@@ -184,16 +170,16 @@ public class DsPresentClient extends DsPresentApi {
      * @return String
      * @throws ApiException if fails to make API call
      */
-    @Override
-    public String getRecord(String id, FormatDto format) throws ApiException {
+    public String getRecord(String id, FormatDto format) throws ServiceException  {
         try {
         URI uri = new URIBuilder(serviceURI + "record/"+id) // Id is part of path                                                                                   
                 .addParameter("format",""+format.toString())
                 .build();           
         return Service2ServiceRequest.httpCallWithOAuthToken(uri,"GET", new String(),null);       
         }
-        catch(Exception e) {
-            throw new ApiException(e);
+        catch(URISyntaxException e) {
+            log.error("Invalid url:"+e.getMessage());
+            throw new InternalServiceException(CLIENT_URL_EXCEPTION);             
         }
     }
     
@@ -225,12 +211,8 @@ public class DsPresentClient extends DsPresentApi {
                     .addParameter("format", format.getValue().toUpperCase(Locale.ROOT))
                     .build();
         } catch (URISyntaxException e) {
-            String message = String.format(Locale.ROOT,
-                    "getRecordsJSON(origin='%s', mTime=%d, maxRecords=%d, format='%s'): " +
-                            "Unable to construct URI",
-                    origin, mTime, maxRecords, format);
-            log.warn(message, e);
-            throw new InternalServiceException(message);
+            log.error("Invalid url:"+e.getMessage());
+            throw new InternalServiceException(CLIENT_URL_EXCEPTION);             
         }
 
         log.debug("Opening streaming connection to '{}'", uri);
@@ -266,12 +248,8 @@ public class DsPresentClient extends DsPresentApi {
                     .addParameter("asJsonLines", Boolean.toString(asJsonLines != null && asJsonLines))
                     .build();
         } catch (URISyntaxException e) {
-            String message = String.format(Locale.ROOT,
-                    "getRecordsRawJSON(origin='%s', mTime=%d, maxRecords=%d, asJsonLines=%b): " +
-                            "Unable to construct URI",
-                    origin, mTime, maxRecords, asJsonLines != null && asJsonLines);
-            log.warn(message, e);
-            throw new InternalServiceException(message);
+            log.error("Invalid url:"+e.getMessage());
+            throw new InternalServiceException(CLIENT_URL_EXCEPTION);             
         }
 
         log.debug("Opening streaming connection to '{}'", uri);
@@ -321,7 +299,7 @@ public class DsPresentClient extends DsPresentApi {
      * @param headers zero or more maps of headers, which will be set for all calls by this client.
      * @return an ApiClient constructed from the serviceURIString.
      */
-    static ApiClient createApiClient(String serviceURIString, Map<String, String>... headers) {
+    static DsPresentClient createApiClient(String serviceURIString, Map<String, String>... headers) {
         log.debug("Creating OpenAPI client with URI '{}', headers {}", serviceURIString, headers);
 
         URI serviceURI = URI.create(serviceURIString);
