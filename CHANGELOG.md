@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Holdback for radio records are now calculated by the same algorithm which calculates the holdback for tv records. 
 
+
 ## [2.3.0](https://github.com/kb-dk/ds-present/releases/tag/ds-present-2.3.0) 2025-03-20
 ### Added
 - Integration unittest with OAuth access token. Require kb-util v.1.6.10 
@@ -29,22 +30,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - ds-present-transformation-errors log which logs only transformation errors.
-<<<<<<< HEAD
 - Added functionality to restrict records based on DS ID.
-=======
 - Added injection of Oauth token on all service methods when using DsPresentClient
->>>>>>> master
 
 ### Changed
 - Bumped multiple OpenAPI dependency versions
 - Changed the response format for the JSON response in /records to include information on failed transformations.
-<<<<<<< HEAD
 - Solr version bumped to v. 1.7.10
-=======
 - Bumped kb-util to v1.6.9 for service2service oauth support.
 - IIIF metods not supported by service2service Oauth since no java client is generated for these methods. Also not intended to be called by other modules.
 - Using new DsLicense and DsStorage client
->>>>>>> master
 
 ### Fixed
 - Fixed /api-docs wrongly showing petstore example API spec
