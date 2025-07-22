@@ -96,6 +96,7 @@
                         <configuration>
                             <inputSpec>${project.build.outputDirectory}/ds-present-openapi_v1.yaml</inputSpec>
                             <ignoreFileOverride>${project.basedir}/.openapi-codegen-ignore-api</ignoreFileOverride>
+                            <output>${project.build.directory}/generated-sources</output>
 
                             <configOptions>
                                 <apiPackage>${project.package}.api.v1</apiPackage>
@@ -120,6 +121,7 @@
                             <inputSpec>${project.build.outputDirectory}/ds-present-openapi_v1.yaml</inputSpec>
                             <ignoreFileOverride>${project.basedir}/.openapi-codegen-ignore-impl</ignoreFileOverride>
                             <ignoreFileOverride>${project.basedir}/.openapi-codegen-ignore-api</ignoreFileOverride>
+                            <output>${project.build.directory}/generated-sources</output>
 
                             <configOptions>
                                 <apiPackage>${project.package}.api.v1</apiPackage>
@@ -159,6 +161,7 @@
                             <!-- Do NOT use the customised templates as they are only for the webservice part, not the client-->
                             <!-- Hacked by Asger by setting to an existing folder without templates -->
                             <templateDirectory>src/main/</templateDirectory>
+                            <output>${project.build.directory}/generated-sources</output>
 
                             <configOptions>
                                 <apiPackage>${project.package}.client.v1</apiPackage>

@@ -343,7 +343,7 @@
                             <outputDirectory>${basedir}/target/jetty-res</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>ds-present-web/src/test/jetty</directory>
+                                    <directory>src/test/jetty</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
