@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+- Refactored the build setup to split the module into an api module and a web module. The reason for this split is that other modules only need dependency
+  of the api and not the entire module as was before.
+- Moved KBAuthorization to ds-shared because it is a shared class for multiple modules.
 
 ### Removed
 

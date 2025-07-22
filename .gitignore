@@ -9,8 +9,10 @@ target/
 
 README_OLD.md
 .openapi-generator/
-conf/ds-present-local.yaml
-conf/ds-present-environment.yaml
+ds-present-api/.openapi-generator/
+ds-present-api/.openapi-generator-ignore
+ds-present-web/conf/ds-present-local.yaml
+ds-present-web/conf/ds-present-environment.yaml
 setup_project.sh
 /579_test_billeder.zip
 /testdata/
@@ -19,12 +21,12 @@ setup_project.sh
 
 # Solr Cloud
 cloud
-bin/cache
+ds-present-web/bin/cache
 /.editorconfig
 
 
 # Contains KB-internal information for testing
-src/test/resources/internal-test-setup.yaml
+ds-present-web/src/test/resources/internal-test-setup.yaml
 internal_test_files/
-bin/custom.conf
-src/test/resources/transformations.log
+ds-present-web/bin/custom.conf
+ds-present-web/src/test/resources/transformations.log

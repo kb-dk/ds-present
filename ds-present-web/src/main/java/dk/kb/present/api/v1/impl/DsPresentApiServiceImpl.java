@@ -2,7 +2,7 @@ package dk.kb.present.api.v1.impl;
 
 import dk.kb.present.PresentFacade;
 import dk.kb.present.Stats;
-import dk.kb.present.api.v1.DsPresentApi;
+import dk.kb.present.api.v1.DsPresentApiApi;
 import dk.kb.present.model.v1.FormatDto;
 import dk.kb.present.model.v1.OriginDto;
 import dk.kb.present.webservice.AccessUtil;
@@ -25,7 +25,7 @@ import java.util.List;
  * Metadata delivery for the Royal Danish Library
  */
 @InInterceptors(interceptors = "dk.kb.present.webservice.KBAuthorizationInterceptor")
-public class DsPresentApiServiceImpl extends ImplBase implements DsPresentApi {
+public class DsPresentApiServiceImpl extends ImplBase implements DsPresentApiApi {
     private static final Logger log = LoggerFactory.getLogger(DsPresentApiServiceImpl.class);
 
     // "Search" is best guess for the access type for now
