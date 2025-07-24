@@ -13,6 +13,14 @@
     <version>${project.parent.version}</version>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>dk.kb.storage</groupId>
+            <artifactId>ds-storage-api</artifactId>
+            <version>3.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <resources>
             <resource>

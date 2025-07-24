@@ -16,9 +16,7 @@ import dk.kb.util.webservice.stream.ContinuationStream;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.*;
-import java.nio.channels.InterruptedByTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 

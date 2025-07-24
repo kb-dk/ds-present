@@ -46,10 +46,6 @@
                         </manifest>
                     </archive>
 
-                    <!-- TODO remove this when the DsPresentClient can be moved to ds-present-api having NO tight coupling to ds-present-web -->
-                    <!-- Generate a JAR with client classes and openapi-YAML for easy use by other services -->
-                    <attachClasses>true</attachClasses>
-
                     <!--Enable maven filtering for the web.xml-->
                     <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
                     <webResources>
