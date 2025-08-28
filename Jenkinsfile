@@ -10,6 +10,16 @@ pipeline {
     }
 
     stages {
+        stage('Trigger Storage Build') {
+             steps {
+                 script {
+                     def result = build job: 'kb-dk/ds-storage/DRA-2011_Jenkins_build',
+                                       parameters: [],
+                                       wait: true // Wait for the pipeline to finish
+                     echo "Child Pipeline Result: ${result}"
+                 }
+             }
+        }
         stage('Build') {
             when { expression { params.Build == true } }
             steps {
