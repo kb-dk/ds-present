@@ -1,6 +1,11 @@
 pipeline {
     agent { label 'DS agent' }
 
+    triggers {
+            // This triggers the pipeline when a PR is opened or updated or so I hope
+            githubPush()
+    }
+
     environment {
         MVN_SETTINGS = '/etc/m2/settings.xml' //This should be changed in Jenkins config for the DS agent
     }
