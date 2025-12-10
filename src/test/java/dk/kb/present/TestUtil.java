@@ -94,14 +94,20 @@ public class TestUtil {
 	 * @return a solr document ready for indexing, created from the schema.org representation of the inputted XML.
 	 */
 	public static String getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(String schemaOrgTransformer, String record) throws IOException {
-		Map<String, String> injections = Map.of("imageserver", "https://example.com/imageserver/",
-				"holdbackDate", "2026-01-17T09:34:42Z",
-				"holdbackPurposeName","Aktualitet og debat",
-				"kalturaID", "aVeryTrueKalturaID",
-				"startTime", "1987-05-04T14:45:00Z",
-				"endTime", "1987-05-04T16:45:00Z",
-				"productionCodeAllowed", "true",
-				"productionCodeValue","1000");
+		return getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(schemaOrgTransformer,record, null);
+	}
+
+	public static String getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(String schemaOrgTransformer, String record, String referenceId) throws IOException {
+		Map<String, String> injections = new HashMap<>();
+		injections.put("imageserver", "https://example.com/imageserver/");
+		injections.put("holdbackDate", "2026-01-17T09:34:42Z");
+		injections.put("holdbackPurposeName", "Aktualitet og debat");
+		injections.put("kalturaID", "aVeryTrueKalturaID");
+		injections.put("startTime", "1987-05-04T14:45:00Z");
+		injections.put("endTime", "1987-05-04T16:45:00Z");
+		injections.put("productionCodeAllowed", "true");
+		injections.put("productionCodeValue", "1000");
+		if (referenceId != null) injections.put("referenceId", referenceId);
 		String schemaOrgJson = TestUtil.getTransformedWithAccessFieldsAdded(schemaOrgTransformer, record, injections);
 		//prettyPrintJson(schemaOrgJson);
 
