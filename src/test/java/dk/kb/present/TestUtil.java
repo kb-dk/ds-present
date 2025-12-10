@@ -64,6 +64,7 @@ public class TestUtil {
 		metadata.put("mTime", "1701261949625000");
 		metadata.put("startTime", "1987-05-04T14:45:00Z");
 		metadata.put("endTime", "1987-05-04T16:45:00Z");
+		//System.out.println("access fields:"+metadata);
 		return transformer.apply(xml, metadata);
 	}
 
@@ -81,6 +82,7 @@ public class TestUtil {
 
         metadata.put("recordID", "ds.test:" + Path.of(xmlResource).getFileName().toString());
 		metadata.put("origin", "ds.test");
+		//System.out.println("access fields:"+metadata);
 		return transformer.apply(xml, metadata);
 	}
 
@@ -92,15 +94,22 @@ public class TestUtil {
 	 * @return a solr document ready for indexing, created from the schema.org representation of the inputted XML.
 	 */
 	public static String getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(String schemaOrgTransformer, String record) throws IOException {
-		Map<String, String> injections = Map.of("imageserver", "https://example.com/imageserver/",
-				"holdbackDate", "2026-01-17T09:34:42Z",
-				"holdbackPurposeName","Aktualitet og debat",
-				"kalturaID", "aVeryTrueKalturaID",
-				"startTime", "1987-05-04T14:45:00Z",
-				"endTime", "1987-05-04T16:45:00Z",
-				"productionCodeAllowed", "true",
-				"productionCodeValue","1000");
-        String schemaOrgJson = TestUtil.getTransformedWithAccessFieldsAdded(schemaOrgTransformer, record, injections);
+		return getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(schemaOrgTransformer,record, null);
+	}
+
+	public static String getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(String schemaOrgTransformer, String record, String referenceId) throws IOException {
+		Map<String, String> injections = new HashMap<>();
+		injections.put("imageserver", "https://example.com/imageserver/");
+		injections.put("holdbackDate", "2026-01-17T09:34:42Z");
+		injections.put("holdbackPurposeName", "Aktualitet og debat");
+		injections.put("kalturaID", "aVeryTrueKalturaID");
+		injections.put("startTime", "1987-05-04T14:45:00Z");
+		injections.put("endTime", "1987-05-04T16:45:00Z");
+		injections.put("productionCodeAllowed", "true");
+		injections.put("productionCodeValue", "1000");
+		if (referenceId != null) injections.put("referenceId", referenceId);
+		String schemaOrgJson = TestUtil.getTransformedWithAccessFieldsAdded(schemaOrgTransformer, record, injections);
+		//prettyPrintJson(schemaOrgJson);
 
 		String placeholderXml = "placeholder.xml";
 		Map<String, String> mapOfJson = Map.of("schemaorgjson", schemaOrgJson);
