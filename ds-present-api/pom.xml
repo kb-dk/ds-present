@@ -6,7 +6,7 @@
     <parent>
         <groupId>dk.kb.present</groupId>
         <artifactId>ds-present-parent</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.0.6-SNAPSHOT</version>
     </parent>
 
     <artifactId>ds-present-api</artifactId>
@@ -17,7 +17,7 @@
         <dependency>
             <groupId>dk.kb.storage</groupId>
             <artifactId>ds-storage-api</artifactId>
-            <version>3.0.1-SNAPSHOT</version>
+            <version>3.0.4-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
