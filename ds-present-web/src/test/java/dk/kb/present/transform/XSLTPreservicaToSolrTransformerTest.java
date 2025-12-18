@@ -315,6 +315,23 @@ public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase
     }
 
     @Test
+    void missingKanalnavn() throws IOException {
+        String solrString = TestUtil.getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(PRESERVICA2SCHEMAORG, TestFiles.PVICA_MISSING_KANALNAVN);
+        Map<String, String > platformMap = Map.of("platform", "DRARKIV");
+        assertTrue(solrString.contains("\"creator_affiliation\""));
+        assertTrue(solrString.contains("\"broadcaster\""));
+        assertTrue(solrString.contains("\"creator_affiliation_facet\""));
+    }
+
+    @Test
+    void platformField() throws IOException {
+        Map<String, String > platformMap = Map.of("platform", "DRARKIV");
+        String solrDocument = transformWithInjections(TestFiles.PVICA_RECORD_3006e2f8, platformMap);
+        System.out.println(solrDocument);
+        assertTrue(solrDocument.contains("\"platform\":\"DRARKIV\""));
+    }
+
+    @Test
     void testStartTime(){
         assertPvicaContains(TestFiles.PVICA_RECORD_3006e2f8, "\"startTime\":\"1987-05-04T14:45:00Z\"");
     }
@@ -435,6 +452,8 @@ public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase
     void testFileIdAndPath(){
         assertPvicaContains(TestFiles.PVICA_WITH_CORRECT_PRESENTATION, "\"file_id\":\"c8d2e73c-0943-4b0d-ab1f-186ef10d8eb4\"");
         assertPvicaContains(TestFiles.PVICA_WITH_CORRECT_PRESENTATION, "\"file_path\":\"c8\\/d2\\/e7\\/c8d2e73c-0943-4b0d-ab1f-186ef10d8eb4\"");
+        assertPvicaContains(TestFiles.PVICA_WITH_CORRECT_PRESENTATION, "\"file_extension\":\"mp4\"");
+
     }
 
     @Test
@@ -553,23 +572,50 @@ public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase
     }
 
     @Test
-    public void testFragmentBooleansTvmeter() throws IOException {
-        String transformedJSON = TestUtil.getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(PRESERVICA2SCHEMAORG , TestFiles.PVICA_DOMS_MIG_172c987b);
+    public void getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File_whenContainsDsTvDrArchiveSupplementaryRightsMetadata_thenContainsDrArchiveSupplementaryRightsMetadataIsTrue() throws IOException {
+        // Act
+        String transformedJSON = TestUtil.getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(PRESERVICA2SCHEMAORG, TestFiles.PVICA7_HOMEMADE_DR_ARCHIVE_SUPPLEMENTARY_RIGHTS_METADATA_DS_TV_TID_TV_METER);
+        log.info(transformedJSON);
+
+        // Assert
+        assertTrue(transformedJSON.contains("\"origin\":\"ds.test\""));
+        assertTrue(transformedJSON.contains("\"contains_dr_archive_supplementary_rights_metadata\":\"true\""));
         assertTrue(transformedJSON.contains("\"contains_tvmeter\":\"true\""));
-        assertTrue(transformedJSON.contains("\"contains_nielsen\":\"false\","));
+        assertTrue(transformedJSON.contains("\"contains_nielsen\":\"false\""));
+        assertTrue(transformedJSON.contains("\"contains_ritzau\":\"true\""));
+    }
+
+    @Test
+    public void getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File_whenContainsDsRadioDrArchiveSupplementaryRightsMetadata_thenContainsDrArchiveSupplementaryRightsMetadataIsTrue() throws IOException {
+        // Act
+        String transformedJSON = TestUtil.getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(PRESERVICA2SCHEMAORG, TestFiles.PVICA7_DR_ARCHIVE_SUPPLEMENTARY_RIGHTS_METADATA_DS_RADIO_83191087);
+        log.info(transformedJSON);
+
+        // Assert
+        assertTrue(transformedJSON.contains("\"origin\":\"ds.test\""));
+        assertTrue(transformedJSON.contains("\"contains_dr_archive_supplementary_rights_metadata\":\"true\""));
+        assertTrue(transformedJSON.contains("\"contains_tvmeter\":\"false\""));
+        assertTrue(transformedJSON.contains("\"contains_nielsen\":\"false\""));
+        assertTrue(transformedJSON.contains("\"contains_ritzau\":\"false\""));
+    }
+
+    @Test
+    public void testFragmentBooleansTvmeter() throws IOException {
+        String transformedJSON = TestUtil.getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(PRESERVICA2SCHEMAORG, TestFiles.PVICA_DOMS_MIG_172c987b);
+        assertTrue(transformedJSON.contains("\"contains_dr_archive_supplementary_rights_metadata\":\"false\""));
+        assertTrue(transformedJSON.contains("\"contains_tvmeter\":\"true\""));
+        assertTrue(transformedJSON.contains("\"contains_nielsen\":\"false\""));
         assertTrue(transformedJSON.contains("\"contains_ritzau\":\"false\""));
     }
 
     @Test
     public void testFragmentBooleansNielsen() throws IOException {
-        String transformedJSON = TestUtil.getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(PRESERVICA2SCHEMAORG , TestFiles.PVICA_RECORD_0e89456b);
+        String transformedJSON = TestUtil.getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(PRESERVICA2SCHEMAORG, TestFiles.PVICA_RECORD_0e89456b);
+        assertTrue(transformedJSON.contains("\"contains_dr_archive_supplementary_rights_metadata\":\"false\""));
         assertTrue(transformedJSON.contains("\"contains_tvmeter\":\"false\""));
-        assertTrue(transformedJSON.contains("\"contains_nielsen\":\"true\","));
+        assertTrue(transformedJSON.contains("\"contains_nielsen\":\"true\""));
         assertTrue(transformedJSON.contains("\"contains_ritzau\":\"true\""));
     }
-
-
-
 
     //@Test
     void testErrorFromFirstSchemaTransformation() throws IOException {

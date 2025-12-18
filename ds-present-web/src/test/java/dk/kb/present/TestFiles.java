@@ -72,6 +72,7 @@ public class TestFiles {
     public static final String PVICA_DOMS_MIG_WITH_TRANSCODINGSTATUS = "internal_test_files/domsMigrated/08909897-cf37-4bd9-a230-1b48c87cea18.xml";
     public static final String PVICA_DOUBLE_CHANNEL = "internal_test_files/preservica7/42de3472-0fa2-4ad3-b8a4-5e99d4ac8242.xml";
     public static final String PVICA_WITH_CORRECT_PRESENTATION = "internal_test_files/preservica7/aaa668c2-bf17-4ce7-bf24-d0ff5d29d097.xml";
+    public static final String PVICA_MISSING_KANALNAVN = "internal_test_files/preservica7/28837427-9af7-4138-808b-2ad49b645297.xml";
 
     // From preservica 6, not in preservica 7 stage
     public static final String PVICA6_RECORD_00a9e71c = "internal_test_files/preservica6/00a9e71c-1264-4e57-9238-b38ec5672fb2.xml";
@@ -104,4 +105,10 @@ public class TestFiles {
     public static final String CUMULUS_RECORD_0c02aa10 = "xml/copyright_extraction/0c02aa10-b657-11e6-aedf-00505688346e.xml";
     public static final String CUMULUS_RECORD_226d41a0 = "xml/copyright_extraction/226d41a0-5a83-11e6-8b8d-0016357f605f.xml";
 
+    // dr_archive_supplementary_rights_metadata
+    public static final String PVICA7_DR_ARCHIVE_SUPPLEMENTARY_RIGHTS_METADATA_DS_RADIO_83191087 = "internal_test_files/preservica7/dr_archive_supplementary_rights_metadata/dsradio/83191087-69b3-4f46-ab64-f230d971def2.xml";
+    public static final String PVICA7_HOMEMADE_DR_ARCHIVE_SUPPLEMENTARY_RIGHTS_METADATA_DS_TV_TID_TV_METER = "internal_test_files/homemade/dr_archive_supplementary_rights_metadata/dstv/tidTvmeter.xml";
+
+    // no_dr_archive_supplementary_rights_metadata_or_nielsen_or_tvmeter
+    public static final String PVICA_NO_DR_ARCHIVE_SUPPLEMENTARY_RIGHTS_METADATA_OR_NIELSEN_OR_TVMETER_RECORD_f0461362 = "internal_test_files/preservica7/no_dr_archive_supplementary_rights_metadata_or_nielsen_or_tvmeter/f0461362-304c-4e31-9192-527f5b8b9a85.xml";
 }

@@ -323,6 +323,12 @@
         </f:string>
       </xsl:if>
 
+        <xsl:if test="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:file_extension') != ''">
+            <f:string key="file_extension">
+                <xsl:value-of select="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:file_extension') "/>
+            </f:string>
+        </xsl:if>
+
 
       <!-- Extract data on the encoded creative work, if present-->
       <xsl:if test="map:contains($schemaorg-xml, 'encodesCreativeWork')">
@@ -382,6 +388,11 @@
       <xsl:if test="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:holdback_content_value') != ''">
         <f:string key="holdback_content_value">
           <xsl:value-of select="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:holdback_content_value')"/>
+        </f:string>
+      </xsl:if>
+      <xsl:if test="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:platform') != ''">
+        <f:string key="platform">
+          <xsl:value-of select="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:platform')"/>
         </f:string>
       </xsl:if>
 
@@ -677,6 +688,12 @@
       </f:string>
     </xsl:if>
 
+      <xsl:if test="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:title_restricted') != ''">
+          <f:string key="title_restricted">
+              <xsl:value-of select="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:title_restricted')"/>
+          </f:string>
+      </xsl:if>
+
     <xsl:if test="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:has_kaltura_id') != ''">
       <f:string key="has_kaltura_id">
         <xsl:value-of select="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:has_kaltura_id')"/>
@@ -847,6 +864,9 @@
     </xsl:if>
 
     <!-- The following three fields should always be available in the schema.org document for radio and tv records, so no need to encapsulate in if-statements. -->
+    <f:string key="contains_dr_archive_supplementary_rights_metadata">
+      <xsl:value-of select="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:contains_dr_archive_supplementary_rights_metadata')"/>
+    </f:string>
     <f:string key="contains_tvmeter">
       <xsl:value-of select="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:contains_tvmeter')"/>
     </f:string>

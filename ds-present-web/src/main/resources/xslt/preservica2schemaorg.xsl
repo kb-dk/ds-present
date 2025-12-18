@@ -10,7 +10,7 @@
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xmlns:pbc="http://www.pbcore.org/PBCore/PBCoreNamespace.html"
                xmlns:padding="http://kuana.kb.dk/types/padding/0/1/#"
-               xmlns:access="http://doms.statsbiblioteket.dk/types/access/0/1/#"
+               xmlns:access="http://id.kb.dk/schemas/radiotv_access/access"
                xmlns:pidhandle="http://kuana.kb.dk/types/pidhandle/0/1/#"
                xmlns:program_structure="http://doms.statsbiblioteket.dk/types/program_structure/0/1/#"
                xmlns:err="http://www.w3.org/2005/xqt-errors"
@@ -43,6 +43,8 @@
   <xsl:param name="productionId"/>
   <xsl:param name="productionIdRestrictedDr"/>
   <xsl:param name="dsIdRestricted"/>
+  <xsl:param name="titleRestricted"/>
+  <xsl:param name="platform"/>
   <xsl:include href="xslt/utils.xsl"/>
 
   <xsl:variable name="InternalAccessionRef">
@@ -87,7 +89,6 @@
         <xsl:otherwise>MediaObject</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
 
     <!-- Saves all extensions in a variable used to check if one or more conditions are met in any of them.
          This is done to create one nested object in the JSON with values from multiple PBC extensions. -->
@@ -453,15 +454,15 @@
     </xsl:choose>
 
     <!-- Publisher extraction. Some metadata has two pbcorePublisher/publisher/publisherRole.
-         We use the one with the value "kanalnavn" as this should be present in all metadata files.-->
-    <xsl:variable name="publisherSpecific">
+      We use the one with the value "kanalnavn" as this should be present in all metadata files.-->
+    <xsl:variable name="publisherSpecificIfExists">
       <xsl:for-each select="./pbcorePublisher">
         <xsl:if test="./publisherRole ='kanalnavn'">
           <xsl:value-of select="./publisher"/>
         </xsl:if>
       </xsl:for-each>
     </xsl:variable>
-    <xsl:variable name="publisherGeneral">
+    <xsl:variable name="publisherGeneralIfExists">
       <xsl:for-each select="./pbcorePublisher">
         <xsl:choose>
           <xsl:when test="./publisherRole ='channel_name'">
@@ -470,6 +471,28 @@
           <xsl:otherwise></xsl:otherwise>
         </xsl:choose>
       </xsl:for-each>
+    </xsl:variable>
+
+    <xsl:variable name="publisherSpecific">
+      <xsl:choose>
+        <xsl:when test="string($publisherSpecificIfExists)">
+          <xsl:value-of select="$publisherSpecificIfExists"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$publisherGeneralIfExists"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="publisherGeneral">
+      <xsl:choose>
+        <xsl:when test="string($publisherGeneralIfExists)">
+          <xsl:value-of select="$publisherGeneralIfExists"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$publisherSpecific"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
 
     <xsl:if test="./pbcorePublisher">
@@ -1022,6 +1045,12 @@
     <xsl:param name="pbcExtensions"/>
     <xsl:param name="type"/>
 
+    <xsl:if test="$platform != ''">
+      <f:string key="kb:platform">
+        <xsl:value-of select="$platform"/>
+      </f:string>
+    </xsl:if>
+
     <!-- Boolean value which determins if the record has a stream available at Kaltura.-->
     <f:boolean key="kb:has_kaltura_id">
       <xsl:choose>
@@ -1098,7 +1127,11 @@
         <xsl:value-of select="/XIP/Metadata/Content/radiotvTranscodingStatus/specificRadioTvTranscodingStatus/accessFilePath"/>
       </xsl:variable>
 
-      <xsl:variable name="fileIdWithExtension">
+      <xsl:variable name="fileExtension">
+          <xsl:value-of select="/XIP/Metadata/Content/radiotvTranscodingStatus/specificRadioTvTranscodingStatus/fileExtension"/>
+      </xsl:variable>
+
+        <xsl:variable name="fileIdWithExtension">
         <xsl:value-of select="tokenize($filePath, '/')[last()]"/>
       </xsl:variable>
 
@@ -1118,6 +1151,12 @@
       <f:string key="kb:file_path">
         <xsl:value-of select="$filePath"/>
       </f:string>
+
+      <xsl:if test="$fileExtension">
+        <f:string key="kb:file_extension">
+          <xsl:value-of select="$fileExtension"/>
+        </f:string>
+      </xsl:if>
     </xsl:if>
 
     <xsl:if test="$productionIdRestrictedDr != ''">
@@ -1131,6 +1170,12 @@
         <xsl:value-of select="$dsIdRestricted"/>
       </f:boolean>
     </xsl:if>
+
+      <xsl:if test="$titleRestricted != ''">
+          <f:boolean key="kb:title_restricted">
+              <xsl:value-of select="$titleRestricted"/>
+          </f:boolean>
+      </xsl:if>
 
     <!-- Extract subgenre if present -->
     <xsl:for-each select="$pbCore/pbcoreGenre/genre">
@@ -1220,7 +1265,7 @@
 
 
     <!-- Extracts access metadata to the internal kb map -->
-    <xsl:for-each select="/XIP/Metadata/Content/access:access">
+    <xsl:for-each select="/XIP/Metadata/Content/access">
       <xsl:if test="position() = 1">
         <xsl:call-template name="access-template"/>
       </xsl:if>
@@ -1244,6 +1289,18 @@
         </f:number>
       </xsl:if>
     </xsl:if>
+
+    <!-- Create a field with a boolean value representing if the record has the extra dr_archive_supplementary_rights_metadata fragment -->
+    <f:boolean key="kb:contains_dr_archive_supplementary_rights_metadata">
+      <xsl:choose>
+        <xsl:when test="/XIP/Metadata[@schemaUri = 'http://id.kb.dk/schemas/dr_archive_supplementary_rights_metadata']">
+          <xsl:value-of select="f:true()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="false()"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </f:boolean>
 
     <!-- Create a field with a boolean value representing if the record has the extra tvmeter fragment -->
     <f:boolean key="kb:contains_tvmeter">
