@@ -64,7 +64,6 @@ public class TestUtil {
 		metadata.put("mTime", "1701261949625000");
 		metadata.put("startTime", "1987-05-04T14:45:00Z");
 		metadata.put("endTime", "1987-05-04T16:45:00Z");
-		//System.out.println("access fields:"+metadata);
 		return transformer.apply(xml, metadata);
 	}
 
@@ -82,7 +81,6 @@ public class TestUtil {
 
         metadata.put("recordID", "ds.test:" + Path.of(xmlResource).getFileName().toString());
 		metadata.put("origin", "ds.test");
-		//System.out.println("access fields:"+metadata);
 		return transformer.apply(xml, metadata);
 	}
 
@@ -109,23 +107,19 @@ public class TestUtil {
 		injections.put("productionCodeValue", "1000");
 		if (referenceId != null) injections.put("referenceId", referenceId);
 		String schemaOrgJson = TestUtil.getTransformedWithAccessFieldsAdded(schemaOrgTransformer, record, injections);
-		//prettyPrintJson(schemaOrgJson);
 
 		String placeholderXml = "placeholder.xml";
 		Map<String, String> mapOfJson = Map.of("schemaorgjson", schemaOrgJson);
 		String solrJson = TestUtil.getTransformedWithAccessFieldsAdded(SCHEMA2SOLR, placeholderXml, mapOfJson);
-		//prettyPrintJson(solrJson);
 		return solrJson;
 	}
 
 	public static String transformWithInjections(String record, Map<String, String> injections) throws IOException {
 		String schemaOrgJson = TestUtil.getTransformedWithMinimumFields(PRESERVICA2SCHEMAORG, record, injections);
-		//prettyPrintJson(schemaOrgJson);
 
 		String placeholderXml = "placeholder.xml";
 		Map<String, String> mapOfJson = Map.of("schemaorgjson", schemaOrgJson);
 		String solrJson = TestUtil.getTransformedWithAccessFieldsAdded(SCHEMA2SOLR, placeholderXml, mapOfJson);
-		//prettyPrintJson(solrJson);
 		return solrJson;
 	}
 
