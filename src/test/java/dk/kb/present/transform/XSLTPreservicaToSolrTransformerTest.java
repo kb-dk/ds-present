@@ -656,7 +656,7 @@ public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase
      * @param substring must be present in the transformed record.
      */
     public void assertPvicaNotContains(String recordFile, String substring) {
-        assertPvicaNotContains(recordFile,substring,null);
+        assertPvicaNotContains(recordFile, substring, null);
     }
 
     public void assertPvicaNotContains(String recordFile, String substring, String referenceId) {
@@ -675,13 +675,13 @@ public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase
      * @param tests Zero or more tests to perform on the transformed record.
      */
     @SafeVarargs
-    public final void assertMultiTestsThroughSchemaTransformation(String record, String referenceId, Consumer<String>... tests){
+    public final void assertMultiTestsThroughSchemaTransformation(String record, String referenceId, Consumer<String>... tests) {
         if (!TestFileProvider.hasSomeTestFiles()) {
             return;  // ensureTestFiles takes care of logging is there are no internal test files
         }
         String solrString;
         try {
-            solrString = TestUtil.getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(PRESERVICA2SCHEMAORG, record,referenceId);
+            solrString = TestUtil.getTransformedToSolrJsonThroughSchemaJsonWithPreservica7File(PRESERVICA2SCHEMAORG, record, referenceId);
             prettyPrintJson(solrString);
         } catch (Exception e) {
             throw new RuntimeException(
