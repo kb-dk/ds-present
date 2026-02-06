@@ -37,7 +37,6 @@ pipeline {
             }
         }
 
-
         stage("Change version") {
             steps {
                 withMaven(options: [artifactsPublisher(fingerprintFilesDisabled: true, archiveFilesDisabled: true)], traceability: true, mavenLocalRepo: "${WORKSPACE}/repository") {
