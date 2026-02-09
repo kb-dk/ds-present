@@ -1170,9 +1170,14 @@ When adding fields to this schema please have the following guidelines in mind:
 
 
   <!-- Contains the full transcription text without time interval for each sentence.-->
-  <field name="transcription" type="text_general" multiValued="false" stored="false">
+  <field name="transcription" type="text_general" multiValued="false" indexed="true" stored="true">
     <?description Contains the full transcription text without time interval for each sentence. ?>
     <?example     Velkommen til tv-avisen ?>   
+  </field>
+
+  <field name="has_transcription" type="boolean"  indexed="true" required="false" docValues="true" stored="true">
+    <?description ?>
+    <?example     ?>
   </field>
 
   <!-- Most fields are copied to this field for matching. -->
