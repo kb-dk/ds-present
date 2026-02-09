@@ -401,7 +401,7 @@
         </f:string>
       </xsl:if>
       <xsl:if test="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:has_transcription') != ''">
-        <f:string key="has_transcription'">
+        <f:string key="has_transcription">
           <xsl:value-of select="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:has_transcription')"/>
         </f:string>
       </xsl:if>
