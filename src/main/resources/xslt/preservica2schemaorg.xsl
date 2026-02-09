@@ -1055,13 +1055,13 @@
     </xsl:if>
 
    <xsl:if test="$transcription != ''">
-      <f:string key="kb:transcriptipon">
+      <f:string key="kb:transcription">
         <xsl:value-of select="$transcription"/>
       </f:string>
     </xsl:if>
    
    <xsl:if test="$has_transcription != ''">
-      <f:string key="kb:has_transcriptipon">
+      <f:string key="kb:has_transcription">
         <xsl:value-of select="$has_transcription"/>
       </f:string>
     </xsl:if>
