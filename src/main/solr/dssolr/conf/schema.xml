@@ -73,7 +73,7 @@ When adding fields to this schema please have the following guidelines in mind:
 1.8.5: Merge release_v2 into master
 1.8.6: Random sort field added that can be used to randomize order of search results. Does not require reindexing, just configuration update.
 1.8.7: New field transcription that contains full description text. Field is not stored.
-
+1.8.8: New field has_transcription boolean to see if a document has a transcription. Since transcription field is not stored this can not be seen directly
   -->
   <field name="_ds_1.8.7_" type="string" indexed="false" stored="false"/>
   <uniqueKey>id</uniqueKey>
