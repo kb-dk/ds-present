@@ -208,6 +208,7 @@ public class View extends ArrayList<DSTransformer> implements Function<DsRecordD
             metadata.put("productionIdRestrictedDr", String.valueOf(rightsOutput.getDr().getDrIdRestricted()));
         }
 
+        //Transcription text.
         String refrenceId = record.getReferenceId();        
         if (refrenceId != null) {
            String transcriptionText=getTranscriptionText(record.getReferenceId());
@@ -215,7 +216,10 @@ public class View extends ArrayList<DSTransformer> implements Function<DsRecordD
               log.debug("Found transcription text for fileId:"+refrenceId);
               metadata.put("has_transcription", "true");
               metadata.put("transcription", transcriptionText);                      
-           }                                        
+           }                           
+        }
+        else {
+            metadata.put("has_transcription", "false");
         }
         
         metadata.put("platform", "DRARKIV");

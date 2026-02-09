@@ -396,12 +396,12 @@
         </f:string>
       </xsl:if>
       <xsl:if test="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:transcription') != ''">
-        <f:string key="platform">
+        <f:string key="transcription">
           <xsl:value-of select="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:transcription')"/>
         </f:string>
       </xsl:if>
       <xsl:if test="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:has_transcription') != ''">
-        <f:string key="platform">
+        <f:string key="has_transcription'">
           <xsl:value-of select="my:getNestedMapValue2Levels($schemaorg-xml, 'kb:internal', 'kb:has_transcription')"/>
         </f:string>
       </xsl:if>
