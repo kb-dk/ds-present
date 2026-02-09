@@ -1175,7 +1175,7 @@ When adding fields to this schema please have the following guidelines in mind:
     <?example     Velkommen til tv-avisen ?>   
   </field>
 
-  <field name="has_transcription" type="boolean"  indexed="true" required="false" docValues="true" stored="true">
+  <field name="has_transcription" type="boolean" indexed="true" required="false" docValues="true" stored="true">
     <?description ?>
     <?example     ?>
   </field>
