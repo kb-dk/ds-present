@@ -14,7 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Solr field for has_transcription (boolean)
 - Solr version bumped to v. 1.8.7
 - Solr version bumped to v. 1.8.8
-- new boolean property to also index transcriptions. Default true.
+- DsPresentStorage extended with getTranscription method for ds-storage.
+- New boolean property to also index transcriptions. Default true.
 
 ### Changed
 - Solr version bumped to v. 1.8.5
