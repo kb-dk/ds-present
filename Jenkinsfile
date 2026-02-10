@@ -38,7 +38,6 @@ pipeline {
             }
         }
 
-
         stage('Change version if part of PR') {
             when {
                 expression {
