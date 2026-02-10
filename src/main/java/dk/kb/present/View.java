@@ -208,10 +208,11 @@ public class View extends ArrayList<DSTransformer> implements Function<DsRecordD
             metadata.put("productionIdRestrictedDr", String.valueOf(rightsOutput.getDr().getDrIdRestricted()));
         }
 
+        boolean useTranscriptions=  ServiceConfig.getConfig().getBoolean("index.useTransriptions");
         boolean hasTranscription=false;
         //Transcription text.
         String refrenceId = record.getReferenceId();        
-        if (refrenceId != null) {
+        if (refrenceId != null && useTranscriptions) {
            String transcriptionText=getTranscriptionText(record.getReferenceId());
            if (transcriptionText != null) {
               log.debug("Found transcription text for fileId:"+refrenceId);
