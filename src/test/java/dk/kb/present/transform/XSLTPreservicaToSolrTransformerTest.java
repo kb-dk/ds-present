@@ -79,7 +79,7 @@ public class XSLTPreservicaToSolrTransformerTest extends XSLTTransformerTestBase
     @Test
     void testEmptyGenre(){
         assertPvicaNotContains(TestFiles.PVICA_RECORD_0b3f6a54, "\"categories\":");
-        assertPvicaContains(TestFiles.PVICA_RECORD_0b3f6a54, "\"genre\":\"TV-rodekasse\"");
+        assertPvicaContains(TestFiles.PVICA_RECORD_0b3f6a54, "\"genre\":\"Blandet TV\"");
     }
 
     @Test

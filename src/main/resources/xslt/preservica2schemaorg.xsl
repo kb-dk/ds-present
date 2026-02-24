@@ -872,20 +872,20 @@
                 <xsl:when test="my:sequenceAContainsValueFromSequenceB($keywordsSequence, $Misc)">
                   <xsl:choose>
                     <xsl:when test="$type = 'VideoObject'">
-                      <xsl:value-of select="'TV-rodekasse'"/>
+                      <xsl:value-of select="'Blandet TV'"/>
                     </xsl:when>
                     <xsl:when test="$type = 'AudioObject'">
-                      <xsl:value-of select="'Radio-rodekasse'"/>
+                      <xsl:value-of select="'Blandet Radio'"/>
                     </xsl:when>
                   </xsl:choose>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:choose>
                     <xsl:when test="$type = 'VideoObject'">
-                      <xsl:value-of select="'TV-rodekasse'"/>
+                      <xsl:value-of select="'Blandet TV'"/>
                     </xsl:when>
                     <xsl:when test="$type = 'AudioObject'">
-                      <xsl:value-of select="'Radio-rodekasse'"/>
+                      <xsl:value-of select="'Blandet Radio'"/>
                     </xsl:when>
                   </xsl:choose>
                 </xsl:otherwise>
@@ -902,10 +902,10 @@
         <f:string key="genre">
           <xsl:choose>
             <xsl:when test="$type = 'VideoObject'">
-              <xsl:value-of select="'TV-rodekasse'"/>
+              <xsl:value-of select="'Blandet TV'"/>
             </xsl:when>
             <xsl:when test="$type = 'AudioObject'">
-              <xsl:value-of select="'Radio-rodekasse'"/>
+              <xsl:value-of select="'Blandet Radio'"/>
             </xsl:when>
           </xsl:choose>
         </f:string>
