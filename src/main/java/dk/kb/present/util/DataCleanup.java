@@ -54,7 +54,7 @@ public class DataCleanup {
     private static final Pattern XML_DECLARATION = Pattern.compile("[\n ]*<[?]xml [^?]*[?]>\n?", Pattern.DOTALL);
 
     public static ZonedDateTime getCleanZonedDateTimeFromString(String datetime){
-        String dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss[XX][XXX]";
+        String dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss[.SSS][XX][XXX]";
         try {
             return DatetimeParser.parseStringToZonedDateTime(datetime, dateTimeFormat);
         } catch (MalformedIOException e) {

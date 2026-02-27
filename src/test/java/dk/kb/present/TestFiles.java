@@ -112,4 +112,7 @@ public class TestFiles {
 
     // no_dr_archive_supplementary_rights_metadata_or_nielsen_or_tvmeter
     public static final String PVICA_NO_DR_ARCHIVE_SUPPLEMENTARY_RIGHTS_METADATA_OR_NIELSEN_OR_TVMETER_RECORD_f0461362 = "internal_test_files/preservica7/no_dr_archive_supplementary_rights_metadata_or_nielsen_or_tvmeter/f0461362-304c-4e31-9192-527f5b8b9a85.xml";
+
+    // ikk
+    public static final String PVICA_IKK_TESTFILE = "internal_test_files/preservica7/77a7ca4c-ba8a-4d50-99f5-04c6e99bb315.xml";
 }

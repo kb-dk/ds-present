@@ -171,4 +171,12 @@ class ExtractedPreservicaValuesTest {
         assertEquals("0000", extractedPreservicaValues.getContent());
     }
 
+    @Test
+    void extractValuesFromPreservicaDateWithMillisekundsTest() throws IOException, ParserConfigurationException, SAXException {
+        String xml = Resolver.resolveUTF8String("internal_test_files/preservica7/77a7ca4c-ba8a-4d50-99f5-04c6e99bb315.xml");
+        ExtractedPreservicaValues extractedPreservicaValues = ExtractedPreservicaValues.extractValuesFromPreservicaContent(xml, "da77d411-3a7d-4f05-8ad1-05a19538f668");
+        assertEquals("1933-08-02T07:00:00Z", extractedPreservicaValues.getStartTime());
+        assertEquals("1933-08-02T07:09:53Z", extractedPreservicaValues.getEndTime());
+    }
+
 }
