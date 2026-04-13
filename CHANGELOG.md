@@ -8,9 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Changed
-- Marked unittest with @Tag("integration") so it can build without aegis. 
+- Marked unittest with @Tag("integration") so it can build without aegis.
+- Bumb solr schema version to 1.8.9
 
-## [4.0.1](https://github.com/kb-dk/ds-present/releases/tag/ds-present-4.0.1) 2026-03-04
+## [4.0.2](https://github.com/kb-dk/ds-present/releases/tag/ds-present-4.0.2) 2026-04-07
+### Added
+- Solr field for annotations
+- Bumb solr schema version to 1.8.7
 
 ### Fixed
 
